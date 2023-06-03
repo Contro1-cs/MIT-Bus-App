@@ -285,7 +285,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             MaterialPageRoute(
                                 builder: (context) => const RegisterPage())),
                         child: Text(
-                          "Already a member? Register",
+                          "Already a member? Login",
                           style: GoogleFonts.poppins(
                             textStyle: TextStyle(
                               color: purple,
