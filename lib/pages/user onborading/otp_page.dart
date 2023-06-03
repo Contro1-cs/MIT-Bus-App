@@ -1,12 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mit_bus_app/main.dart';
 import 'package:mit_bus_app/pages/home/home.dart';
 import 'package:mit_bus_app/pages/landing_page.dart';
-import 'package:mit_bus_app/pages/user%20onborading/register_page.dart';
 import 'package:pinput/pinput.dart';
 
 class OTPScreen extends StatefulWidget {
@@ -29,7 +27,7 @@ class _OTPScreenState extends State<OTPScreen> {
   }
 
   void startTimer() {
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {
         _seconds--;
         if (_seconds == 0) {
