@@ -1,14 +1,14 @@
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
-class OTPScreen extends StatefulWidget {
-  const OTPScreen({super.key});
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
 
   @override
-  State<OTPScreen> createState() => _OTPScreenState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _OTPScreenState extends State<OTPScreen> {
+class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Container();

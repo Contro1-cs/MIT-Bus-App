@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mit_bus_app/pages/landing_page.dart';
-import 'package:mit_bus_app/pages/user%20onborading/otp_screen.dart';
+import 'package:mit_bus_app/pages/user%20onborading/student_registeration.dart';
 import 'package:mit_bus_app/pages/user%20onborading/register_page.dart';
 
 class LoginPage extends StatefulWidget {
