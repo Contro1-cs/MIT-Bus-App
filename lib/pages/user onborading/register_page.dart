@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mit_bus_app/pages/landing_page.dart';
+import 'package:mit_bus_app/pages/user%20onborading/login_page.dart';
+import 'package:mit_bus_app/pages/user%20onborading/otp_page.dart';
 import 'package:mit_bus_app/pages/user%20onborading/student_registeration.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -168,7 +170,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     width: 240,
                     margin: const EdgeInsets.symmetric(horizontal: 10),
                     decoration: BoxDecoration(
-                      color: const Color(0xffC3C3C3),
+                      color: Colors.grey.withOpacity(0.3),
                       borderRadius: BorderRadius.circular(100),
                     ),
                     child: Row(
@@ -239,7 +241,9 @@ class _RegisterPageState extends State<RegisterPage> {
                                   const Duration(milliseconds: 500),
                               pageBuilder:
                                   (context, animation, secondaryAnimation) {
-                                return const OTPScreen();
+                                return OTPScreen(
+                                  phoneNumber: _phoneNoController.text,
+                                );
                               },
                               transitionsBuilder: (context, animation,
                                   secondaryAnimation, child) {
@@ -281,9 +285,11 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                       TextButton(
                         onPressed: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const RegisterPage())),
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const LoginPage(),
+                          ),
+                        ),
                         child: Text(
                           "Already a member? Login",
                           style: GoogleFonts.poppins(

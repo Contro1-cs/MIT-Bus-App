@@ -1,24 +1,21 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mit_bus_app/lists/lists.dart';
 import 'package:mit_bus_app/pages/home/home.dart';
 import 'package:mit_bus_app/pages/landing_page.dart';
 import 'package:mit_bus_app/widgets/drop_down.dart';
 
-class OTPScreen extends StatefulWidget {
+class StudentRegisteration extends StatefulWidget {
   final bool isStudent = false;
-  const OTPScreen({super.key});
+  const StudentRegisteration({super.key});
 
   @override
-  State<OTPScreen> createState() => _OTPScreenState();
+  State<StudentRegisteration> createState() => _StudentRegisterationState();
 }
 
 bool _termsNcondition = false;
 
-class _OTPScreenState extends State<OTPScreen> {
+class _StudentRegisterationState extends State<StudentRegisteration> {
   var _college = college[0];
   var _year = year[0];
   var _pickUpPoint = pickUpPoint[0];
@@ -28,135 +25,140 @@ class _OTPScreenState extends State<OTPScreen> {
     var h = MediaQuery.of(context).size.height;
     var w = MediaQuery.of(context).size.width;
     return Scaffold(
+      appBar: AppBar(
+        toolbarHeight: 150,
+        // elevation: 0,
+        backgroundColor: purple,
+        title: Text(
+          "Student's Profile",
+          style: GoogleFonts.poppins(
+            textStyle: const TextStyle(
+              color: Colors.white,
+              fontSize: 30,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      ),
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Container(
-              height: 150,
-              width: w,
-              color: purple,
-              alignment: Alignment.centerLeft,
-              padding: const EdgeInsets.fromLTRB(25, 0, 0, 0),
-              child: Text(
-                "Student Profile",
-                style: GoogleFonts.poppins(
-                  textStyle: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 34,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
-
-            //College
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 35),
-              width: w,
-              alignment: Alignment.centerLeft,
-              child: CustomDropdownMenu(
-                value: _college,
-                list: college,
-                title: 'Select a College',
-                onChanged: (newValue) {
-                  setState(() {
-                    _college = newValue!;
-                  });
-                },
-              ),
-            ),
-
-            //Year
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 35),
-              width: w,
-              alignment: Alignment.centerLeft,
-              child: CustomDropdownMenu(
-                value: _year,
-                list: year,
-                title: 'Year',
-                onChanged: (newValue) {
-                  setState(() {
-                    _year = newValue!;
-                  });
-                },
-              ),
-            ),
-
-            //Area
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 35),
-              width: w,
-              alignment: Alignment.centerLeft,
-              child: CustomDropdownMenu(
-                value: _area,
-                list: areas,
-                title: 'Area',
-                onChanged: (newValue) {
-                  setState(() {
-                    _area = newValue!;
-                  });
-                },
-              ),
-            ),
-
-            //Pickup Area
+            const SizedBox(height: 1),
             Column(
               children: [
+                //College
                 Container(
                   margin: const EdgeInsets.symmetric(horizontal: 35),
                   width: w,
                   alignment: Alignment.centerLeft,
                   child: CustomDropdownMenu(
-                    value: _pickUpPoint,
-                    title: 'Pickup point',
-                    list: pickUpPoint,
+                    value: _college,
+                    list: college,
+                    title: 'Select a College',
                     onChanged: (newValue) {
                       setState(() {
-                        _pickUpPoint = newValue!;
+                        _college = newValue!;
                       });
                     },
                   ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                const SizedBox(height: 20),
+
+                //Year
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 35),
+                  width: w,
+                  alignment: Alignment.centerLeft,
+                  child: CustomDropdownMenu(
+                    value: _year,
+                    list: year,
+                    title: 'Year',
+                    onChanged: (newValue) {
+                      setState(() {
+                        _year = newValue!;
+                      });
+                    },
+                  ),
+                ),
+                const SizedBox(height: 20),
+
+                //Area
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 35),
+                  width: w,
+                  alignment: Alignment.centerLeft,
+                  child: CustomDropdownMenu(
+                    value: _area,
+                    list: areas,
+                    title: 'Area',
+                    onChanged: (newValue) {
+                      setState(() {
+                        _area = newValue!;
+                      });
+                    },
+                  ),
+                ),
+                const SizedBox(height: 20),
+
+                //Pickup Area
+                Column(
                   children: [
-                    Checkbox(
-                      activeColor: purple,
-                      value: _termsNcondition,
-                      onChanged: (value) {
-                        setState(() {
-                          _termsNcondition = !_termsNcondition;
-                        });
-                      },
-                    ),
-                    Text(
-                      'I agree to the ',
-                      style: GoogleFonts.inter(
-                        color: purple,
+                    Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 35),
+                      width: w,
+                      alignment: Alignment.centerLeft,
+                      child: CustomDropdownMenu(
+                        value: _pickUpPoint,
+                        title: 'Pickup point',
+                        list: pickUpPoint,
+                        onChanged: (newValue) {
+                          setState(() {
+                            _pickUpPoint = newValue!;
+                          });
+                        },
                       ),
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text("Terms and Conditions"),
-                          ),
-                        );
-                      },
-                      child: Text(
-                        'Terms & Conditions',
-                        style: GoogleFonts.inter(
-                          color: purple,
-                          fontWeight: FontWeight.bold,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Checkbox(
+                          activeColor: purple,
+                          value: _termsNcondition,
+                          onChanged: (value) {
+                            setState(() {
+                              _termsNcondition = !_termsNcondition;
+                            });
+                          },
                         ),
-                      ),
+                        Text(
+                          'I agree to the ',
+                          style: GoogleFonts.inter(
+                            color: purple,
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text("Terms and Conditions"),
+                              ),
+                            );
+                          },
+                          child: Text(
+                            'Terms & Conditions',
+                            style: GoogleFonts.inter(
+                              color: purple,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        )
+                      ],
                     )
                   ],
-                )
+                ),
               ],
             ),
             GestureDetector(

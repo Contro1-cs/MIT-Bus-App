@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mit_bus_app/pages/landing_page.dart';
-import 'package:mit_bus_app/pages/user%20onborading/student_registeration.dart';
+import 'package:mit_bus_app/pages/user%20onborading/otp_page.dart';
 import 'package:mit_bus_app/pages/user%20onborading/register_page.dart';
 
 class LoginPage extends StatefulWidget {
@@ -13,8 +13,8 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   @override
+  TextEditingController _phoneNoController = TextEditingController();
   Widget build(BuildContext context) {
-    TextEditingController _phoneNoController = TextEditingController();
     var h = MediaQuery.of(context).size.height;
     var w = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -76,7 +76,10 @@ class _LoginPageState extends State<LoginPage> {
                         const Text('Phone number'),
                         TextField(
                           controller: _phoneNoController,
+                          keyboardType: TextInputType.phone,
+                          maxLength: 10,
                           decoration: const InputDecoration(
+                            counterText: '',
                             hintText: '7888459162',
                             hintStyle: TextStyle(
                               color: Colors.grey,
@@ -96,31 +99,43 @@ class _LoginPageState extends State<LoginPage> {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          Navigator.push(
-                            context,
-                            PageRouteBuilder(
-                              transitionDuration:
-                                  const Duration(milliseconds: 500),
-                              pageBuilder:
-                                  (context, animation, secondaryAnimation) {
-                                return const OTPScreen();
-                              },
-                              transitionsBuilder: (context, animation,
-                                  secondaryAnimation, child) {
-                                var begin = const Offset(1.0, 0.0);
-                                var end = Offset.zero;
-                                var curve = Curves.ease;
+                          (_phoneNoController.text.isNotEmpty &&
+                                  _phoneNoController.text.length == 10)
+                              ? Navigator.push(
+                                  context,
+                                  PageRouteBuilder(
+                                    transitionDuration:
+                                        const Duration(milliseconds: 500),
+                                    pageBuilder: (context, animation,
+                                        secondaryAnimation) {
+                                      return OTPScreen(
+                                        phoneNumber: _phoneNoController.text,
+                                      );
+                                    },
+                                    transitionsBuilder: (context, animation,
+                                        secondaryAnimation, child) {
+                                      var begin = const Offset(1.0, 0.0);
+                                      var end = Offset.zero;
+                                      var curve = Curves.ease;
 
-                                var tween = Tween(begin: begin, end: end)
-                                    .chain(CurveTween(curve: curve));
+                                      var tween = Tween(begin: begin, end: end)
+                                          .chain(CurveTween(curve: curve));
 
-                                return SlideTransition(
-                                  position: animation.drive(tween),
-                                  child: child,
+                                      return SlideTransition(
+                                        position: animation.drive(tween),
+                                        child: child,
+                                      );
+                                    },
+                                  ),
+                                )
+                              : ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content: Text(
+                                        "Please enter correct phone number",
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                      backgroundColor: Color(0xffFF7F7F)),
                                 );
-                              },
-                            ),
-                          );
                         },
                         child: Container(
                           width: w,
