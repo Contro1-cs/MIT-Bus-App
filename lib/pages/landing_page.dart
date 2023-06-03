@@ -204,7 +204,6 @@ class _LandingPageState extends State<LandingPage> {
                       textStyle: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
-                        letterSpacing: 1.5,
                       ),
                     ),
                   ),

@@ -11,26 +11,6 @@ class OnboardingPage extends StatefulWidget {
   State<OnboardingPage> createState() => _OnboardingPageState();
 }
 
-class MyCustomShapePainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    var paint = Paint()
-      ..color = purple
-      ..style = PaintingStyle.fill;
-
-    var path = Path();
-    path.moveTo(0, size.width * 2);
-    path.lineTo(0, 0);
-    path.lineTo(size.width * 2, 0);
-    path.lineTo(size.width * 2, size.height);
-
-    canvas.drawPath(path, paint);
-  }
-
-  @override
-  bool shouldRepaint(MyCustomShapePainter oldDelegate) => false;
-}
-
 bool shrinkContainer = false;
 
 class _OnboardingPageState extends State<OnboardingPage> {
@@ -40,21 +20,23 @@ class _OnboardingPageState extends State<OnboardingPage> {
     var w = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      body: Container(
+      body: SizedBox(
         height: h,
         width: w,
         child: Stack(
           children: [
             Positioned(
-              child: CustomPaint(
-                painter: MyCustomShapePainter(),
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 500),
-                  width: w,
-                  height: h * 0.1,
-                ),
-              ),
-            ),
+                top: -200,
+                left: -150,
+                child: Transform.rotate(
+                  angle: 60 * (3.14 / 180), // Convert degrees to radians
+                  child: Container(
+                    width: h / 2 + 100,
+                    height: w * 2,
+                    color: purple,
+                    // Your container content here
+                  ),
+                )),
             Positioned(
                 child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
