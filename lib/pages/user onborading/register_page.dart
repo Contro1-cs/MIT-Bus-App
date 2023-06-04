@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mit_bus_app/pages/landing_page.dart';
-import 'package:mit_bus_app/pages/user%20onborading/otp_screen.dart';
+import 'package:mit_bus_app/pages/user%20onborading/login_page.dart';
+import 'package:mit_bus_app/pages/user%20onborading/otp_page.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -60,16 +61,6 @@ class _RegisterPageState extends State<RegisterPage> {
                             color: purple,
                             fontSize: 34,
                             fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      Text(
-                        "Join the transportation app and never miss another update!",
-                        textAlign: TextAlign.center,
-                        style: GoogleFonts.poppins(
-                          textStyle: TextStyle(
-                            color: purple,
-                            fontSize: 14,
                           ),
                         ),
                       ),
@@ -168,7 +159,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     width: 240,
                     margin: const EdgeInsets.symmetric(horizontal: 10),
                     decoration: BoxDecoration(
-                      color: const Color(0xffC3C3C3),
+                      color: Colors.grey.withOpacity(0.3),
                       borderRadius: BorderRadius.circular(100),
                     ),
                     child: Row(
@@ -232,31 +223,48 @@ class _RegisterPageState extends State<RegisterPage> {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          Navigator.push(
-                            context,
-                            PageRouteBuilder(
-                              transitionDuration:
-                                  const Duration(milliseconds: 500),
-                              pageBuilder:
-                                  (context, animation, secondaryAnimation) {
-                                return const OTPScreen();
-                              },
-                              transitionsBuilder: (context, animation,
-                                  secondaryAnimation, child) {
-                                var begin = const Offset(1.0, 0.0);
-                                var end = Offset.zero;
-                                var curve = Curves.ease;
+                          (_phoneNoController.text.isNotEmpty &&
+                                  _phoneNoController.text.length == 10 &&
+                                  _nameController.text.trim().isNotEmpty &&
+                                  _emailController.text.trim().isNotEmpty)
+                              ? Navigator.push(
+                                  context,
+                                  PageRouteBuilder(
+                                    transitionDuration:
+                                        const Duration(milliseconds: 500),
+                                    pageBuilder: (context, animation,
+                                        secondaryAnimation) {
+                                      return OTPScreen(
+                                        phoneNumber: _phoneNoController.text,
+                                        isStudent: _isStudent,
+                                        isLogin: false,
+                                      );
+                                    },
+                                    transitionsBuilder: (context, animation,
+                                        secondaryAnimation, child) {
+                                      var begin = const Offset(1.0, 0.0);
+                                      var end = Offset.zero;
+                                      var curve = Curves.ease;
 
-                                var tween = Tween(begin: begin, end: end)
-                                    .chain(CurveTween(curve: curve));
+                                      var tween = Tween(begin: begin, end: end)
+                                          .chain(CurveTween(curve: curve));
 
-                                return SlideTransition(
-                                  position: animation.drive(tween),
-                                  child: child,
+                                      return SlideTransition(
+                                        position: animation.drive(tween),
+                                        child: child,
+                                      );
+                                    },
+                                  ),
+                                )
+                              : ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text(
+                                      "Please enter all the details correctly",
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                    backgroundColor: Color(0xffFF7F7F),
+                                  ),
                                 );
-                              },
-                            ),
-                          );
                         },
                         child: Container(
                           width: w,
@@ -281,9 +289,11 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                       TextButton(
                         onPressed: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const RegisterPage())),
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const LoginPage(),
+                          ),
+                        ),
                         child: Text(
                           "Already a member? Login",
                           style: GoogleFonts.poppins(
