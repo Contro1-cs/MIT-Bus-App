@@ -3,7 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:mit_bus_app/pages/landing_page.dart';
 import 'package:mit_bus_app/pages/user%20onborading/login_page.dart';
 import 'package:mit_bus_app/pages/user%20onborading/otp_page.dart';
-import 'package:mit_bus_app/pages/user%20onborading/student_registeration.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -225,7 +224,9 @@ class _RegisterPageState extends State<RegisterPage> {
                       GestureDetector(
                         onTap: () {
                           (_phoneNoController.text.isNotEmpty &&
-                                  _phoneNoController.text.length == 10)
+                                  _phoneNoController.text.length == 10 &&
+                                  _nameController.text.trim().isNotEmpty &&
+                                  _emailController.text.trim().isNotEmpty)
                               ? Navigator.push(
                                   context,
                                   PageRouteBuilder(
@@ -235,6 +236,8 @@ class _RegisterPageState extends State<RegisterPage> {
                                         secondaryAnimation) {
                                       return OTPScreen(
                                         phoneNumber: _phoneNoController.text,
+                                        isStudent: _isStudent,
+                                        isLogin: false,
                                       );
                                     },
                                     transitionsBuilder: (context, animation,
@@ -255,11 +258,12 @@ class _RegisterPageState extends State<RegisterPage> {
                                 )
                               : ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
-                                      content: Text(
-                                        "Please enter correct phone number",
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                      backgroundColor: Color(0xffFF7F7F)),
+                                    content: Text(
+                                      "Please enter all the details correctly",
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                    backgroundColor: Color(0xffFF7F7F),
+                                  ),
                                 );
                         },
                         child: Container(

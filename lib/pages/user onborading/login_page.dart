@@ -110,6 +110,7 @@ class _LoginPageState extends State<LoginPage> {
                                         secondaryAnimation) {
                                       return OTPScreen(
                                         phoneNumber: _phoneNoController.text,
+                                        isLogin: true,
                                       );
                                     },
                                     transitionsBuilder: (context, animation,

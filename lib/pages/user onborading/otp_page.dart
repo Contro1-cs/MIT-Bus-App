@@ -4,11 +4,19 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mit_bus_app/pages/home/home.dart';
 import 'package:mit_bus_app/pages/landing_page.dart';
+import 'package:mit_bus_app/pages/user%20onborading/faculty_registeration.dart';
+import 'package:mit_bus_app/pages/user%20onborading/student_registeration.dart';
 import 'package:pinput/pinput.dart';
 
 class OTPScreen extends StatefulWidget {
-  var phoneNumber;
-  OTPScreen({super.key, required this.phoneNumber});
+  final phoneNumber;
+  final isStudent;
+  final bool isLogin;
+  OTPScreen(
+      {super.key,
+      required this.phoneNumber,
+      this.isStudent,
+      required this.isLogin});
 
   @override
   State<OTPScreen> createState() => _OTPScreenState();
@@ -152,31 +160,96 @@ class _OTPScreenState extends State<OTPScreen> {
                         onTap: () {
                           (_otpController.text.isNotEmpty &&
                                   _otpController.text.length == 4)
-                              ? Navigator.push(
-                                  context,
-                                  PageRouteBuilder(
-                                    transitionDuration:
-                                        const Duration(milliseconds: 500),
-                                    pageBuilder: (context, animation,
-                                        secondaryAnimation) {
-                                      return const HomePage();
-                                    },
-                                    transitionsBuilder: (context, animation,
-                                        secondaryAnimation, child) {
-                                      var begin = const Offset(1.0, 0.0);
-                                      var end = Offset.zero;
-                                      var curve = Curves.ease;
+                              ? (widget.isLogin == false)
+                                  ? widget.isStudent
+                                      ? Navigator.push(
+                                          context,
+                                          PageRouteBuilder(
+                                            transitionDuration: const Duration(
+                                                milliseconds: 500),
+                                            pageBuilder: (context, animation,
+                                                secondaryAnimation) {
+                                              return const StudentRegisteration();
+                                            },
+                                            transitionsBuilder: (context,
+                                                animation,
+                                                secondaryAnimation,
+                                                child) {
+                                              var begin =
+                                                  const Offset(1.0, 0.0);
+                                              var end = Offset.zero;
+                                              var curve = Curves.ease;
 
-                                      var tween = Tween(begin: begin, end: end)
-                                          .chain(CurveTween(curve: curve));
+                                              var tween = Tween(
+                                                      begin: begin, end: end)
+                                                  .chain(
+                                                      CurveTween(curve: curve));
 
-                                      return SlideTransition(
-                                        position: animation.drive(tween),
-                                        child: child,
-                                      );
-                                    },
-                                  ),
-                                )
+                                              return SlideTransition(
+                                                position:
+                                                    animation.drive(tween),
+                                                child: child,
+                                              );
+                                            },
+                                          ),
+                                        )
+                                      : Navigator.push(
+                                          context,
+                                          PageRouteBuilder(
+                                            transitionDuration: const Duration(
+                                                milliseconds: 500),
+                                            pageBuilder: (context, animation,
+                                                secondaryAnimation) {
+                                              return const FacultyRegisteration();
+                                            },
+                                            transitionsBuilder: (context,
+                                                animation,
+                                                secondaryAnimation,
+                                                child) {
+                                              var begin =
+                                                  const Offset(1.0, 0.0);
+                                              var end = Offset.zero;
+                                              var curve = Curves.ease;
+
+                                              var tween = Tween(
+                                                      begin: begin, end: end)
+                                                  .chain(
+                                                      CurveTween(curve: curve));
+
+                                              return SlideTransition(
+                                                position:
+                                                    animation.drive(tween),
+                                                child: child,
+                                              );
+                                            },
+                                          ),
+                                        )
+                                  : Navigator.push(
+                                      context,
+                                      PageRouteBuilder(
+                                        transitionDuration:
+                                            const Duration(milliseconds: 500),
+                                        pageBuilder: (context, animation,
+                                            secondaryAnimation) {
+                                          return const HomePage();
+                                        },
+                                        transitionsBuilder: (context, animation,
+                                            secondaryAnimation, child) {
+                                          var begin = const Offset(1.0, 0.0);
+                                          var end = Offset.zero;
+                                          var curve = Curves.ease;
+
+                                          var tween = Tween(
+                                                  begin: begin, end: end)
+                                              .chain(CurveTween(curve: curve));
+
+                                          return SlideTransition(
+                                            position: animation.drive(tween),
+                                            child: child,
+                                          );
+                                        },
+                                      ),
+                                    )
                               : ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
                                     content: Text(
