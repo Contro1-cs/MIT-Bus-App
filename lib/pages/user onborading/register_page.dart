@@ -65,16 +65,6 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                         ),
                       ),
-                      Text(
-                        "Join the transportation app and never miss another update!",
-                        textAlign: TextAlign.center,
-                        style: GoogleFonts.poppins(
-                          textStyle: TextStyle(
-                            color: purple,
-                            fontSize: 14,
-                          ),
-                        ),
-                      ),
                     ],
                   ),
                   Column(
@@ -234,33 +224,43 @@ class _RegisterPageState extends State<RegisterPage> {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          Navigator.push(
-                            context,
-                            PageRouteBuilder(
-                              transitionDuration:
-                                  const Duration(milliseconds: 500),
-                              pageBuilder:
-                                  (context, animation, secondaryAnimation) {
-                                return OTPScreen(
-                                  phoneNumber: _phoneNoController.text,
-                                );
-                              },
-                              transitionsBuilder: (context, animation,
-                                  secondaryAnimation, child) {
-                                var begin = const Offset(1.0, 0.0);
-                                var end = Offset.zero;
-                                var curve = Curves.ease;
+                          (_phoneNoController.text.isNotEmpty &&
+                                  _phoneNoController.text.length == 10)
+                              ? Navigator.push(
+                                  context,
+                                  PageRouteBuilder(
+                                    transitionDuration:
+                                        const Duration(milliseconds: 500),
+                                    pageBuilder: (context, animation,
+                                        secondaryAnimation) {
+                                      return OTPScreen(
+                                        phoneNumber: _phoneNoController.text,
+                                      );
+                                    },
+                                    transitionsBuilder: (context, animation,
+                                        secondaryAnimation, child) {
+                                      var begin = const Offset(1.0, 0.0);
+                                      var end = Offset.zero;
+                                      var curve = Curves.ease;
 
-                                var tween = Tween(begin: begin, end: end)
-                                    .chain(CurveTween(curve: curve));
+                                      var tween = Tween(begin: begin, end: end)
+                                          .chain(CurveTween(curve: curve));
 
-                                return SlideTransition(
-                                  position: animation.drive(tween),
-                                  child: child,
+                                      return SlideTransition(
+                                        position: animation.drive(tween),
+                                        child: child,
+                                      );
+                                    },
+                                  ),
+                                )
+                              : ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content: Text(
+                                        "Please enter correct phone number",
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                      backgroundColor: Color(0xffFF7F7F)),
                                 );
-                              },
-                            ),
-                          );
                         },
                         child: Container(
                           width: w,

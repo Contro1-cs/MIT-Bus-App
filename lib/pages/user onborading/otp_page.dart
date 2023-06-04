@@ -2,14 +2,13 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mit_bus_app/main.dart';
 import 'package:mit_bus_app/pages/home/home.dart';
 import 'package:mit_bus_app/pages/landing_page.dart';
 import 'package:pinput/pinput.dart';
 
 class OTPScreen extends StatefulWidget {
-  final phoneNumber;
-  const OTPScreen({super.key, required this.phoneNumber});
+  var phoneNumber;
+  OTPScreen({super.key, required this.phoneNumber});
 
   @override
   State<OTPScreen> createState() => _OTPScreenState();
@@ -19,6 +18,7 @@ class _OTPScreenState extends State<OTPScreen> {
   late Timer _timer;
   int _seconds = 30;
   bool _buttonEnabled = false;
+  TextEditingController _otpController = TextEditingController();
 
   @override
   void initState() {
@@ -87,9 +87,8 @@ class _OTPScreenState extends State<OTPScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      const SizedBox(height: 10),
                       Text(
-                        "Verification",
+                        "\nVerification",
                         style: GoogleFonts.poppins(
                           textStyle: TextStyle(
                             color: purple,
@@ -98,33 +97,9 @@ class _OTPScreenState extends State<OTPScreen> {
                           ),
                         ),
                       ),
-                      TextButton(
-                        onPressed: () => Navigator.pop(context),
-                        child: RichText(
-                          text: TextSpan(
-                            text: 'Wrong phone number? ',
-                            style: GoogleFonts.poppins(
-                              textStyle: TextStyle(
-                                  color: purple,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.normal),
-                            ),
-                            children: <TextSpan>[
-                              TextSpan(
-                                text: 'Change',
-                                style: GoogleFonts.poppins(
-                                  textStyle: TextStyle(
-                                      color: purple,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
                       const SizedBox(height: 10),
                       Pinput(
+                        controller: _otpController,
                         defaultPinTheme: PinTheme(
                             height: 60,
                             width: 45,
@@ -134,6 +109,40 @@ class _OTPScreenState extends State<OTPScreen> {
                             ),
                             textStyle: const TextStyle(fontSize: 20)),
                       ),
+                      TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: RichText(
+                          text: TextSpan(
+                            text: widget.phoneNumber,
+                            style: GoogleFonts.poppins(
+                              textStyle: TextStyle(
+                                  color: purple,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.normal),
+                            ),
+                            children: <TextSpan>[
+                              TextSpan(
+                                text: ' not your phone number? ',
+                                style: GoogleFonts.poppins(
+                                  textStyle: TextStyle(
+                                    color: purple,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ),
+                              TextSpan(
+                                text: 'Change',
+                                style: GoogleFonts.poppins(
+                                  textStyle: TextStyle(
+                                      color: purple,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                   const SizedBox(height: 1),
@@ -141,31 +150,42 @@ class _OTPScreenState extends State<OTPScreen> {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          Navigator.push(
-                            context,
-                            PageRouteBuilder(
-                              transitionDuration:
-                                  const Duration(milliseconds: 500),
-                              pageBuilder:
-                                  (context, animation, secondaryAnimation) {
-                                return const HomePage();
-                              },
-                              transitionsBuilder: (context, animation,
-                                  secondaryAnimation, child) {
-                                var begin = const Offset(1.0, 0.0);
-                                var end = Offset.zero;
-                                var curve = Curves.ease;
+                          (_otpController.text.isNotEmpty &&
+                                  _otpController.text.length == 4)
+                              ? Navigator.push(
+                                  context,
+                                  PageRouteBuilder(
+                                    transitionDuration:
+                                        const Duration(milliseconds: 500),
+                                    pageBuilder: (context, animation,
+                                        secondaryAnimation) {
+                                      return const HomePage();
+                                    },
+                                    transitionsBuilder: (context, animation,
+                                        secondaryAnimation, child) {
+                                      var begin = const Offset(1.0, 0.0);
+                                      var end = Offset.zero;
+                                      var curve = Curves.ease;
 
-                                var tween = Tween(begin: begin, end: end)
-                                    .chain(CurveTween(curve: curve));
+                                      var tween = Tween(begin: begin, end: end)
+                                          .chain(CurveTween(curve: curve));
 
-                                return SlideTransition(
-                                  position: animation.drive(tween),
-                                  child: child,
+                                      return SlideTransition(
+                                        position: animation.drive(tween),
+                                        child: child,
+                                      );
+                                    },
+                                  ),
+                                )
+                              : ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text(
+                                      'Please enter correct OTP...',
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                    backgroundColor: Color(0xffFF7F7F),
+                                  ),
                                 );
-                              },
-                            ),
-                          );
                         },
                         child: Container(
                           width: w,
@@ -209,8 +229,9 @@ class _OTPScreenState extends State<OTPScreen> {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(100),
                             color: _buttonEnabled
-                                ? purple
-                                : purple.withOpacity(0.5),
+                                ? Colors.white
+                                : Colors.grey.withOpacity(0.3),
+                            border: Border.all(color: purple),
                           ),
                           child: Center(
                             child: Text(
@@ -218,8 +239,10 @@ class _OTPScreenState extends State<OTPScreen> {
                                   ? "Resend"
                                   : "Resend in ${_seconds}s",
                               style: GoogleFonts.inter(
-                                textStyle: const TextStyle(
-                                  color: Colors.white,
+                                textStyle: TextStyle(
+                                  color: _buttonEnabled
+                                      ? purple
+                                      : Colors.black.withOpacity(0.5),
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
