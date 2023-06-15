@@ -231,7 +231,7 @@ class _OTPScreenState extends State<OTPScreen> {
                                             const Duration(milliseconds: 500),
                                         pageBuilder: (context, animation,
                                             secondaryAnimation) {
-                                          return const HomePage();
+                                          return const StudentRegisteration();
                                         },
                                         transitionsBuilder: (context, animation,
                                             secondaryAnimation, child) {

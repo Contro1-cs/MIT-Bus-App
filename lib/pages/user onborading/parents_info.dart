@@ -8,7 +8,17 @@ import 'package:mit_bus_app/widgets/drop_down.dart';
 import 'package:mit_bus_app/widgets/form_field.dart';
 
 class ParentsInfo extends StatefulWidget {
-  const ParentsInfo({super.key});
+  const ParentsInfo({
+    super.key,
+    required this.studentname,
+    required this.pickupPoint,
+    required this.PickupArea,
+    required this.college,
+  });
+  final String studentname;
+  final String pickupPoint;
+  final String PickupArea;
+  final String college;
 
   @override
   State<ParentsInfo> createState() => _ParentsInfoState();
@@ -157,8 +167,7 @@ class _ParentsInfoState extends State<ParentsInfo> {
                 title: 'Total fees pending',
                 hint: 'pending amount',
                 controller: _pendingFees,
-                              keyboardType: TextInputType.number,
-
+                keyboardType: TextInputType.number,
               ),
             ),
             const SizedBox(height: 20),
@@ -171,7 +180,15 @@ class _ParentsInfoState extends State<ParentsInfo> {
                     PageRouteBuilder(
                       transitionDuration: const Duration(milliseconds: 500),
                       pageBuilder: (context, animation, secondaryAnimation) {
-                        return const HomePage();
+                        return HomePage(
+                          studentName: widget.studentname,
+                          parentsName: _parentsName.text,
+                          pendingFees: _isFeesPaid ? 0 : _pendingFees.text,
+                          pickupArea: widget.PickupArea,
+                          pickupPoint: widget.pickupPoint,
+                          parentsPhone: _parentsPhone.text,
+                          college: widget.college,
+                        );
                       },
                       transitionsBuilder:
                           (context, animation, secondaryAnimation, child) {

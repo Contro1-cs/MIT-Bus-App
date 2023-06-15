@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mit_bus_app/lists/lists.dart';
-import 'package:mit_bus_app/pages/home/home.dart';
 import 'package:mit_bus_app/pages/landing_page.dart';
 import 'package:mit_bus_app/pages/user%20onborading/parents_info.dart';
 import 'package:mit_bus_app/widgets/custom_snackbars.dart';
 import 'package:mit_bus_app/widgets/drop_down.dart';
+import 'package:mit_bus_app/widgets/form_field.dart';
 
 class StudentRegisteration extends StatefulWidget {
   final bool isStudent = false;
@@ -16,6 +16,7 @@ class StudentRegisteration extends StatefulWidget {
 }
 
 bool _termsNcondition = false;
+TextEditingController name = TextEditingController();
 
 class _StudentRegisterationState extends State<StudentRegisteration> {
   var _college = college[0];
@@ -44,13 +45,26 @@ class _StudentRegisterationState extends State<StudentRegisteration> {
         ),
       ),
       body: SafeArea(
+          child: SingleChildScrollView(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const SizedBox(height: 1),
             Column(
               children: [
+                const SizedBox(height: 10),
+                Container(
+                  width: w,
+                  alignment: Alignment.centerLeft,
+                  child: CustomFormField(
+                    controller: name,
+                    title: "Name",
+                    keyboardType: TextInputType.name,
+                    hint: "Rahul Kulkarni",
+                  ),
+                ),
+                const SizedBox(height: 20),
                 //College
                 Container(
                   width: w,
@@ -119,6 +133,7 @@ class _StudentRegisterationState extends State<StudentRegisteration> {
                         },
                       ),
                     ),
+                    const SizedBox(height: 20),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -162,14 +177,19 @@ class _StudentRegisterationState extends State<StudentRegisteration> {
             ),
             GestureDetector(
               onTap: () {
-                _termsNcondition
+                (_termsNcondition && name.text.trim().isNotEmpty)
                     ? Navigator.push(
                         context,
                         PageRouteBuilder(
                           transitionDuration: const Duration(milliseconds: 500),
                           pageBuilder:
                               (context, animation, secondaryAnimation) {
-                            return const ParentsInfo();
+                            return ParentsInfo(
+                              studentname: name.text,
+                              pickupPoint: _pickUpPoint,
+                              PickupArea: _area,
+                              college: _college,
+                            );
                           },
                           transitionsBuilder:
                               (context, animation, secondaryAnimation, child) {
@@ -213,7 +233,7 @@ class _StudentRegisterationState extends State<StudentRegisteration> {
             ),
           ],
         ),
-      ),
+      ),),
     );
   }
 }
