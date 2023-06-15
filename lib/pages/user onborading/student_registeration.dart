@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mit_bus_app/lists/lists.dart';
-import 'package:mit_bus_app/pages/home/home.dart';
 import 'package:mit_bus_app/pages/landing_page.dart';
+import 'package:mit_bus_app/pages/user%20onborading/parents_info.dart';
+import 'package:mit_bus_app/widgets/custom_snackbars.dart';
 import 'package:mit_bus_app/widgets/drop_down.dart';
+import 'package:mit_bus_app/widgets/form_field.dart';
 
 class StudentRegisteration extends StatefulWidget {
   final bool isStudent = false;
@@ -14,12 +16,14 @@ class StudentRegisteration extends StatefulWidget {
 }
 
 bool _termsNcondition = false;
+TextEditingController name = TextEditingController();
 
 class _StudentRegisterationState extends State<StudentRegisteration> {
   var _college = college[0];
   var _year = year[0];
   var _pickUpPoint = pickUpPoint[0];
   var _area = areas[0];
+
   @override
   Widget build(BuildContext context) {
     var h = MediaQuery.of(context).size.height;
@@ -41,16 +45,28 @@ class _StudentRegisterationState extends State<StudentRegisteration> {
         ),
       ),
       body: SafeArea(
+          child: SingleChildScrollView(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const SizedBox(height: 1),
             Column(
               children: [
+                const SizedBox(height: 10),
+                Container(
+                  width: w,
+                  alignment: Alignment.centerLeft,
+                  child: CustomFormField(
+                    controller: name,
+                    title: "Name",
+                    keyboardType: TextInputType.name,
+                    hint: "Rahul Kulkarni",
+                  ),
+                ),
+                const SizedBox(height: 20),
                 //College
                 Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 35),
                   width: w,
                   alignment: Alignment.centerLeft,
                   child: CustomDropdownMenu(
@@ -68,7 +84,6 @@ class _StudentRegisterationState extends State<StudentRegisteration> {
 
                 //Year
                 Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 35),
                   width: w,
                   alignment: Alignment.centerLeft,
                   child: CustomDropdownMenu(
@@ -86,7 +101,6 @@ class _StudentRegisterationState extends State<StudentRegisteration> {
 
                 //Area
                 Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 35),
                   width: w,
                   alignment: Alignment.centerLeft,
                   child: CustomDropdownMenu(
@@ -106,7 +120,6 @@ class _StudentRegisterationState extends State<StudentRegisteration> {
                 Column(
                   children: [
                     Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 35),
                       width: w,
                       alignment: Alignment.centerLeft,
                       child: CustomDropdownMenu(
@@ -120,6 +133,7 @@ class _StudentRegisterationState extends State<StudentRegisteration> {
                         },
                       ),
                     ),
+                    const SizedBox(height: 20),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -163,41 +177,50 @@ class _StudentRegisterationState extends State<StudentRegisteration> {
             ),
             GestureDetector(
               onTap: () {
-                Navigator.push(
-                  context,
-                  PageRouteBuilder(
-                    transitionDuration: const Duration(milliseconds: 500),
-                    pageBuilder: (context, animation, secondaryAnimation) {
-                      return const HomePage();
-                    },
-                    transitionsBuilder:
-                        (context, animation, secondaryAnimation, child) {
-                      var begin = const Offset(1.0, 0.0);
-                      var end = Offset.zero;
-                      var curve = Curves.ease;
+                (_termsNcondition && name.text.trim().isNotEmpty)
+                    ? Navigator.push(
+                        context,
+                        PageRouteBuilder(
+                          transitionDuration: const Duration(milliseconds: 500),
+                          pageBuilder:
+                              (context, animation, secondaryAnimation) {
+                            return ParentsInfo(
+                              studentname: name.text,
+                              pickupPoint: _pickUpPoint,
+                              PickupArea: _area,
+                              college: _college,
+                            );
+                          },
+                          transitionsBuilder:
+                              (context, animation, secondaryAnimation, child) {
+                            var begin = const Offset(1.0, 0.0);
+                            var end = Offset.zero;
+                            var curve = Curves.ease;
 
-                      var tween = Tween(begin: begin, end: end)
-                          .chain(CurveTween(curve: curve));
+                            var tween = Tween(begin: begin, end: end)
+                                .chain(CurveTween(curve: curve));
 
-                      return SlideTransition(
-                        position: animation.drive(tween),
-                        child: child,
-                      );
-                    },
-                  ),
-                );
+                            return SlideTransition(
+                              position: animation.drive(tween),
+                              child: child,
+                            );
+                          },
+                        ),
+                      )
+                    : errorSnackbar(
+                        context, 'Please accept the terms and conditions');
               },
               child: Container(
                 width: w,
                 height: 50,
-                margin: const EdgeInsets.fromLTRB(25, 0, 25, 25),
+                margin: const EdgeInsets.fromLTRB(25, 0, 25, 40),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(100),
                   color: purple,
                 ),
                 child: Center(
                   child: Text(
-                    "Login",
+                    "Proceed",
                     style: GoogleFonts.inter(
                       textStyle: const TextStyle(
                         color: Colors.white,
@@ -210,7 +233,7 @@ class _StudentRegisterationState extends State<StudentRegisteration> {
             ),
           ],
         ),
-      ),
+      ),),
     );
   }
 }

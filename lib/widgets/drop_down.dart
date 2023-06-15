@@ -20,38 +20,41 @@ class CustomDropdownMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     var h = MediaQuery.of(context).size.height;
     var w = MediaQuery.of(context).size.width;
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          title,
-          style: GoogleFonts.poppins(
-            textStyle: TextStyle(
-              color: purple,
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 35),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: GoogleFonts.poppins(
+              textStyle: TextStyle(
+                color: purple,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
-        ),
-        const SizedBox(height: 5),
-        SizedBox(
-          width: w,
-          height: 50,
-          child: DropdownButton<String>(
-            value: value,
-            isExpanded: true,
-            hint: const Text('Select a college'),
-            onChanged: onChanged,
-            items: list.map<DropdownMenuItem<String>>((value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value),
-              );
-            }).toList(),
+          const SizedBox(height: 5),
+          SizedBox(
+            width: w,
+            height: 50,
+            child: DropdownButton<String>(
+              value: value,
+              isExpanded: true,
+              hint: const Text('Select a college'),
+              onChanged: onChanged,
+              items: list.map<DropdownMenuItem<String>>((value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
