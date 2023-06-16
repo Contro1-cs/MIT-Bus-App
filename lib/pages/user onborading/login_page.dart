@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mit_bus_app/pages/landing_page.dart';
 import 'package:mit_bus_app/pages/user%20onborading/otp_page.dart';
 import 'package:mit_bus_app/pages/user%20onborading/register_page.dart';
@@ -12,11 +14,50 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  static Future<User?> signInWithGoogle({required BuildContext context}) async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    User? user;
+
+    final GoogleSignIn googleSignIn = GoogleSignIn();
+
+    final GoogleSignInAccount? googleSignInAccount =
+        await googleSignIn.signIn();
+
+    if (googleSignInAccount != null) {
+      final GoogleSignInAuthentication googleSignInAuthentication =
+          await googleSignInAccount.authentication;
+
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleSignInAuthentication.accessToken,
+        idToken: googleSignInAuthentication.idToken,
+      );
+
+      try {
+        final UserCredential userCredential =
+            await auth.signInWithCredential(credential);
+
+        user = userCredential.user;
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'account-exists-with-different-credential') {
+          // handle the error here
+        } else if (e.code == 'invalid-credential') {
+          // handle the error here
+        }
+      } catch (e) {
+        // handle the error here
+      }
+    }
+
+    return user;
+  }
+
   @override
   TextEditingController _phoneNoController = TextEditingController();
   Widget build(BuildContext context) {
     var h = MediaQuery.of(context).size.height;
     var w = MediaQuery.of(context).size.width;
+    final FirebaseAuth auth = FirebaseAuth.instance;
+
     return Scaffold(
       body: SingleChildScrollView(
         child: SizedBox(
@@ -66,77 +107,20 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ],
                   ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 35),
-                    alignment: Alignment.centerLeft,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text('Phone number'),
-                        TextField(
-                          controller: _phoneNoController,
-                          keyboardType: TextInputType.phone,
-                          maxLength: 10,
-                          decoration: const InputDecoration(
-                            counterText: '',
-                            hintText: '7888459162',
-                            hintStyle: TextStyle(
-                              color: Colors.grey,
-                            ),
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.black),
-                            ),
-                            focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.black),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
                   Column(
                     children: [
                       GestureDetector(
-                        onTap: () {
-                          (_phoneNoController.text.isNotEmpty &&
-                                  _phoneNoController.text.length == 10)
-                              ? Navigator.push(
-                                  context,
-                                  PageRouteBuilder(
-                                    transitionDuration:
-                                        const Duration(milliseconds: 500),
-                                    pageBuilder: (context, animation,
-                                        secondaryAnimation) {
-                                      return OTPScreen(
-                                        phoneNumber: _phoneNoController.text,
-                                        isLogin: true,
-                                      );
-                                    },
-                                    transitionsBuilder: (context, animation,
-                                        secondaryAnimation, child) {
-                                      var begin = const Offset(1.0, 0.0);
-                                      var end = Offset.zero;
-                                      var curve = Curves.ease;
+                        onTap: () async {
+                          debugPrint("Entry##");
+                          User? user = await signInWithGoogle(context: context);
+                          debugPrint("Exit1##");
 
-                                      var tween = Tween(begin: begin, end: end)
-                                          .chain(CurveTween(curve: curve));
-
-                                      return SlideTransition(
-                                        position: animation.drive(tween),
-                                        child: child,
-                                      );
-                                    },
-                                  ),
-                                )
-                              : ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                      content: Text(
-                                        "Please enter correct phone number",
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                      backgroundColor: Color(0xffFF7F7F)),
-                                );
+                          if (user?.email == null) {
+                            debugPrint("Logged in failed##");
+                          } else {
+                            debugPrint("Login successful##");
+                          }
+                          debugPrint("Exit##");
                         },
                         child: Container(
                           width: w,
