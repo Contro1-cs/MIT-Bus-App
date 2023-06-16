@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mit_bus_app/lists/lists.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:mit_bus_app/pages/home/bus.dart';
 import 'package:mit_bus_app/pages/home/profile.dart';
 import 'package:mit_bus_app/pages/landing_page.dart';
@@ -50,7 +50,7 @@ class _HomePageState extends State<HomePage> {
       const ProfilePage(),
     ];
     return Scaffold(
-        backgroundColor: purple,
+        backgroundColor: Colors.white,
         appBar: AppBar(
           title: Text(
             "Home",
@@ -59,37 +59,37 @@ class _HomePageState extends State<HomePage> {
               fontWeight: FontWeight.bold,
             ),
           ),
-          backgroundColor: Colors.white.withOpacity(0.3),
+          backgroundColor: const Color(0xff202020),
           elevation: 0,
           automaticallyImplyLeading: false,
         ),
-        bottomNavigationBar: SizedBox(
-          height: 75,
-          child: BottomNavigationBar(
-            currentIndex: _currentIndex,
-            backgroundColor: Colors.white.withOpacity(0.3),
-            elevation: 0,
-            selectedItemColor: Colors.white,
-            onTap: (index) {
-              setState(() {
-                _currentIndex = index;
-              });
-            },
-            items: const [
-              BottomNavigationBarItem(
-                icon: Icon(Icons.house),
-                label: 'Home',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.directions_bus),
-                label: 'Bus',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.person),
-                label: 'Profile',
-              ),
-            ],
-          ),
+        bottomNavigationBar: GNav(
+          onTabChange: (index) {
+            setState(() {
+              _currentIndex = index;
+            });
+          },
+          gap: 8,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          backgroundColor: const Color(0xff202020),
+          color: Colors.white,
+          activeColor: Colors.white,
+          tabMargin: const EdgeInsets.all(5),
+          tabBackgroundColor: Colors.white.withOpacity(0.3),
+          tabs: const [
+            GButton(
+              icon: Icons.home,
+              text: 'Home',
+            ),
+            GButton(
+              icon: Icons.airport_shuttle,
+              text: 'Bus',
+            ),
+            GButton(
+              icon: Icons.person,
+              text: 'Profile',
+            ),
+          ],
         ),
         body: pages[_currentIndex]);
   }
@@ -132,7 +132,7 @@ class _HomeBodyState extends State<HomeBody> {
               child: Text(
                 'Student Profile',
                 style: GoogleFonts.inter(
-                    color: Colors.white,
+                    color: Colors.black,
                     fontWeight: FontWeight.bold,
                     fontSize: 30),
               ),
@@ -140,7 +140,7 @@ class _HomeBodyState extends State<HomeBody> {
             Text(
               'MIT ADT University',
               style: GoogleFonts.inter(
-                color: Colors.white,
+                color: Colors.black,
                 fontWeight: FontWeight.normal,
                 fontSize: 12,
               ),
@@ -150,7 +150,7 @@ class _HomeBodyState extends State<HomeBody> {
         const Divider(
           height: 10,
           thickness: 2,
-          color: Colors.white,
+          color: Colors.black,
           indent: 100,
           endIndent: 100,
         ),
@@ -162,7 +162,7 @@ class _HomeBodyState extends State<HomeBody> {
                   .map((word) => word[0].toUpperCase() + word.substring(1))
                   .join(" "),
               style: GoogleFonts.inter(
-                color: Colors.white,
+                color: Colors.black,
                 fontWeight: FontWeight.bold,
                 fontSize: 30,
               ),
@@ -170,7 +170,7 @@ class _HomeBodyState extends State<HomeBody> {
             Text(
               widget.college,
               style: GoogleFonts.inter(
-                color: Colors.white,
+                color: Colors.black,
                 fontWeight: FontWeight.normal,
                 fontSize: 14,
               ),
@@ -184,7 +184,7 @@ class _HomeBodyState extends State<HomeBody> {
               padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
-                color: Colors.white.withOpacity(.16),
+                color: purple,
               ),
               child: Column(
                 children: [
@@ -212,13 +212,13 @@ class _HomeBodyState extends State<HomeBody> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.all(5),
+              padding: const EdgeInsets.all(5),
               child: Transform.rotate(
                 angle: 90 * math.pi / 180,
                 child: const Icon(
                   Icons.swap_horiz,
                   size: 30,
-                  color: Colors.white,
+                  color: Colors.black,
                 ),
               ),
             ),
@@ -227,7 +227,7 @@ class _HomeBodyState extends State<HomeBody> {
               padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
-                color: Colors.white.withOpacity(.16),
+                color: purple,
               ),
               child: Column(
                 children: [
@@ -269,7 +269,7 @@ class _HomeBodyState extends State<HomeBody> {
             padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
-              color: Colors.white.withOpacity(.16),
+              color: purple,
             ),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
