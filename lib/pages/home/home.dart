@@ -270,7 +270,7 @@ class _HomeBodyState extends State<HomeBody> {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
               color: purple,
-            ),
+              ),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,

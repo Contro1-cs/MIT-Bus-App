@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "1059294772251",
+    "project_id": "mit-bus-app",
+    "storage_bucket": "mit-bus-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1059294772251:android:635e73d274bbc03acb0cbe",
+        "android_client_info": {
+          "package_name": "com.example.mit_bus_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1059294772251-gcpkhp6trnlj3pnd127hiii2jkrr9d1c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyArkOE6o6uxbW5VzTXWc4Zr6roQc6xof14"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1059294772251-gcpkhp6trnlj3pnd127hiii2jkrr9d1c.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1059294772251-9ktrfr4j11qesbt3v856s7dgbptrloqk.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.mitBusApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
