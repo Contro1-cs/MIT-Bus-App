@@ -5,6 +5,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mit_bus_app/pages/landing_page.dart';
 import 'package:mit_bus_app/pages/user%20onborading/otp_page.dart';
 import 'package:mit_bus_app/pages/user%20onborading/register_page.dart';
+import 'package:mit_bus_app/widgets/form_field.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -13,44 +14,12 @@ class LoginPage extends StatefulWidget {
   State<LoginPage> createState() => _LoginPageState();
 }
 
+bool _hidePassword = false;
+
+TextEditingController _authEmail = TextEditingController();
+TextEditingController _authPassword = TextEditingController();
+
 class _LoginPageState extends State<LoginPage> {
-  static Future<User?> signInWithGoogle({required BuildContext context}) async {
-    FirebaseAuth auth = FirebaseAuth.instance;
-    User? user;
-
-    final GoogleSignIn googleSignIn = GoogleSignIn();
-
-    final GoogleSignInAccount? googleSignInAccount =
-        await googleSignIn.signIn();
-
-    if (googleSignInAccount != null) {
-      final GoogleSignInAuthentication googleSignInAuthentication =
-          await googleSignInAccount.authentication;
-
-      final AuthCredential credential = GoogleAuthProvider.credential(
-        accessToken: googleSignInAuthentication.accessToken,
-        idToken: googleSignInAuthentication.idToken,
-      );
-
-      try {
-        final UserCredential userCredential =
-            await auth.signInWithCredential(credential);
-
-        user = userCredential.user;
-      } on FirebaseAuthException catch (e) {
-        if (e.code == 'account-exists-with-different-credential') {
-          // handle the error here
-        } else if (e.code == 'invalid-credential') {
-          // handle the error here
-        }
-      } catch (e) {
-        // handle the error here
-      }
-    }
-
-    return user;
-  }
-
   @override
   TextEditingController _phoneNoController = TextEditingController();
   Widget build(BuildContext context) {
@@ -109,18 +78,92 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   Column(
                     children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 35),
+                        alignment: Alignment.centerLeft,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text('Email'),
+                            TextField(
+                              controller: _authEmail,
+                              keyboardType: TextInputType.emailAddress,
+                              decoration: const InputDecoration(
+                                hintText: 'Rahul@gmail.com',
+                                hintStyle: TextStyle(
+                                  color: Colors.grey,
+                                ),
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.black),
+                                ),
+                                focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.black),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 25),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 35),
+                        alignment: Alignment.centerLeft,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text('Password'),
+                            TextField(
+                              controller: _authPassword,
+                              keyboardType: TextInputType.visiblePassword,
+                              obscureText: _hidePassword,
+                              decoration: InputDecoration(
+                                suffixIcon: _hidePassword
+                                    ? IconButton(
+                                        onPressed: () {
+                                          setState(() {
+                                            _hidePassword = !_hidePassword;
+                                          });
+                                        },
+                                        icon: const Icon(
+                                          Icons.visibility_rounded,
+                                          color: Colors.black,
+                                        ),
+                                      )
+                                    : IconButton(
+                                        onPressed: () {
+                                          setState(() {
+                                            _hidePassword = !_hidePassword;
+                                          });
+                                        },
+                                        icon: const Icon(
+                                          Icons.visibility_off_rounded,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                hintText: 'Minimum 6 characters',
+                                hintStyle: const TextStyle(
+                                  color: Colors.grey,
+                                ),
+                                enabledBorder: const UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.black),
+                                ),
+                                focusedBorder: const UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.black),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  Column(
+                    children: [
                       GestureDetector(
                         onTap: () async {
-                          debugPrint("Entry##");
-                          User? user = await signInWithGoogle(context: context);
-                          debugPrint("Exit1##");
-
-                          if (user?.email == null) {
-                            debugPrint("Logged in failed##");
-                          } else {
-                            debugPrint("Login successful##");
-                          }
-                          debugPrint("Exit##");
+                          
                         },
                         child: Container(
                           width: w,
