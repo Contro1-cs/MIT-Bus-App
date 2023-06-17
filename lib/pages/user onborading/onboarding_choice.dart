@@ -1,9 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mit_bus_app/lists/lists.dart';
 import 'package:mit_bus_app/pages/landing_page.dart';
 import 'package:mit_bus_app/pages/user%20onborading/register_page.dart';
-import 'package:mit_bus_app/pages/user%20onborading/student_registeration.dart';
+import 'package:mit_bus_app/widgets/custom_snackbars.dart';
 
 class OnboardingChoice extends StatefulWidget {
   const OnboardingChoice({super.key});
@@ -15,13 +16,34 @@ class OnboardingChoice extends StatefulWidget {
 TextEditingController _authEmailController = TextEditingController();
 TextEditingController _authPasswordController = TextEditingController();
 String _userTypeValue = "Student";
-bool _hidePassword = false;
+bool _hidePassword = true;
 
 class OnboardingChoiceState extends State<OnboardingChoice> {
   @override
   Widget build(BuildContext context) {
+    emailRegisteration(String email, String password) async {
+      try {
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: email,
+          password: password,
+        );
+        successSnackbar(context, 'Login successful');
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'weak-password') {
+          errorSnackbar(context, 'Please enter a stronger password');
+        } else if (e.code == 'email-already-in-use') {
+          errorSnackbar(
+              context, 'This user already exists. Please Login to continue');
+        }
+      } catch (e) {
+        errorSnackbar(context, e.toString());
+      }
+    }
+
     var h = MediaQuery.of(context).size.height;
     var w = MediaQuery.of(context).size.width;
+    FirebaseAuth auth = FirebaseAuth.instance;
+
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 150,
@@ -166,12 +188,17 @@ class OnboardingChoiceState extends State<OnboardingChoice> {
             children: [
               GestureDetector(
                 onTap: () async {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const StudentRegisteration(),
-                    ),
-                  );
+                  if (_authEmailController.text.trim().isEmpty ||
+                      _authEmailController.text.contains('@') == false) {
+                    errorSnackbar(context, 'Please enter a valid email');
+                  } else if (_authPasswordController.text.trim().isEmpty) {
+                    errorSnackbar(context, 'Please enter a valid password');
+                  } else {
+                    emailRegisteration(
+                      _authEmailController.text.trim(),
+                      _authPasswordController.text.toString(),
+                    );
+                  }
                 },
                 child: Container(
                   width: w,
@@ -183,7 +210,7 @@ class OnboardingChoiceState extends State<OnboardingChoice> {
                   ),
                   child: Center(
                     child: Text(
-                      "Verify OTP",
+                      "Register",
                       style: GoogleFonts.inter(
                         textStyle: const TextStyle(
                           color: Colors.white,
