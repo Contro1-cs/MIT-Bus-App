@@ -1,8 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mit_bus_app/pages/landing_page.dart';
 import 'package:mit_bus_app/pages/user%20onborading/otp_page.dart';
 import 'package:mit_bus_app/pages/user%20onborading/register_page.dart';
+import 'package:mit_bus_app/widgets/form_field.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -11,12 +14,19 @@ class LoginPage extends StatefulWidget {
   State<LoginPage> createState() => _LoginPageState();
 }
 
+bool _hidePassword = false;
+
+TextEditingController _authEmail = TextEditingController();
+TextEditingController _authPassword = TextEditingController();
+
 class _LoginPageState extends State<LoginPage> {
   @override
   TextEditingController _phoneNoController = TextEditingController();
   Widget build(BuildContext context) {
     var h = MediaQuery.of(context).size.height;
     var w = MediaQuery.of(context).size.width;
+    final FirebaseAuth auth = FirebaseAuth.instance;
+
     return Scaffold(
       body: SingleChildScrollView(
         child: SizedBox(
@@ -66,77 +76,94 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ],
                   ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 35),
-                    alignment: Alignment.centerLeft,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text('Phone number'),
-                        TextField(
-                          controller: _phoneNoController,
-                          keyboardType: TextInputType.phone,
-                          maxLength: 10,
-                          decoration: const InputDecoration(
-                            counterText: '',
-                            hintText: '7888459162',
-                            hintStyle: TextStyle(
-                              color: Colors.grey,
+                  Column(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 35),
+                        alignment: Alignment.centerLeft,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text('Email'),
+                            TextField(
+                              controller: _authEmail,
+                              keyboardType: TextInputType.emailAddress,
+                              decoration: const InputDecoration(
+                                hintText: 'Rahul@gmail.com',
+                                hintStyle: TextStyle(
+                                  color: Colors.grey,
+                                ),
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.black),
+                                ),
+                                focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.black),
+                                ),
+                              ),
                             ),
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.black),
-                            ),
-                            focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.black),
-                            ),
-                          ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                      const SizedBox(height: 25),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 35),
+                        alignment: Alignment.centerLeft,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text('Password'),
+                            TextField(
+                              controller: _authPassword,
+                              keyboardType: TextInputType.visiblePassword,
+                              obscureText: _hidePassword,
+                              decoration: InputDecoration(
+                                suffixIcon: _hidePassword
+                                    ? IconButton(
+                                        onPressed: () {
+                                          setState(() {
+                                            _hidePassword = !_hidePassword;
+                                          });
+                                        },
+                                        icon: const Icon(
+                                          Icons.visibility_rounded,
+                                          color: Colors.black,
+                                        ),
+                                      )
+                                    : IconButton(
+                                        onPressed: () {
+                                          setState(() {
+                                            _hidePassword = !_hidePassword;
+                                          });
+                                        },
+                                        icon: const Icon(
+                                          Icons.visibility_off_rounded,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                hintText: 'Minimum 6 characters',
+                                hintStyle: const TextStyle(
+                                  color: Colors.grey,
+                                ),
+                                enabledBorder: const UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.black),
+                                ),
+                                focusedBorder: const UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.black),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
                   Column(
                     children: [
                       GestureDetector(
-                        onTap: () {
-                          (_phoneNoController.text.isNotEmpty &&
-                                  _phoneNoController.text.length == 10)
-                              ? Navigator.push(
-                                  context,
-                                  PageRouteBuilder(
-                                    transitionDuration:
-                                        const Duration(milliseconds: 500),
-                                    pageBuilder: (context, animation,
-                                        secondaryAnimation) {
-                                      return OTPScreen(
-                                        phoneNumber: _phoneNoController.text,
-                                        isLogin: true,
-                                      );
-                                    },
-                                    transitionsBuilder: (context, animation,
-                                        secondaryAnimation, child) {
-                                      var begin = const Offset(1.0, 0.0);
-                                      var end = Offset.zero;
-                                      var curve = Curves.ease;
-
-                                      var tween = Tween(begin: begin, end: end)
-                                          .chain(CurveTween(curve: curve));
-
-                                      return SlideTransition(
-                                        position: animation.drive(tween),
-                                        child: child,
-                                      );
-                                    },
-                                  ),
-                                )
-                              : ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                      content: Text(
-                                        "Please enter correct phone number",
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                      backgroundColor: Color(0xffFF7F7F)),
-                                );
+                        onTap: () async {
+                          
                         },
                         child: Container(
                           width: w,

@@ -9,24 +9,7 @@ import 'package:mit_bus_app/pages/landing_page.dart';
 import 'dart:math' as math;
 
 class HomePage extends StatefulWidget {
-  final studentName;
-  final parentsName;
-  final pendingFees;
-  final pickupPoint;
-  final pickupArea;
-  final parentsPhone;
-  final college;
-
-  const HomePage({
-    super.key,
-    required this.studentName,
-    required this.parentsName,
-    required this.pendingFees,
-    required this.pickupPoint,
-    required this.pickupArea,
-    required this.parentsPhone,
-    required this.college,
-  });
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -37,15 +20,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final pages = [
-      HomeBody(
-        studentName: widget.studentName,
-        parentsName: widget.parentsName,
-        pendingFees: widget.pendingFees,
-        pickupPoint: widget.pickupPoint,
-        pickupArea: widget.pickupArea,
-        parentsPhone: widget.parentsPhone,
-        college: widget.college,
-      ),
+      HomeBody(),
       const BusPage(),
       const ProfilePage(),
     ];
@@ -96,22 +71,7 @@ class _HomePageState extends State<HomePage> {
 }
 
 class HomeBody extends StatefulWidget {
-  const HomeBody(
-      {super.key,
-      required this.studentName,
-      required this.parentsName,
-      required this.pendingFees,
-      required this.pickupPoint,
-      required this.pickupArea,
-      required this.parentsPhone,
-      required this.college});
-  final studentName;
-  final parentsName;
-  final pendingFees;
-  final pickupPoint;
-  final pickupArea;
-  final parentsPhone;
-  final college;
+  const HomeBody({super.key});
 
   @override
   State<HomeBody> createState() => _HomeBodyState();
@@ -157,7 +117,7 @@ class _HomeBodyState extends State<HomeBody> {
         Column(
           children: [
             Text(
-              widget.studentName
+              'aaditya jagdale'
                   .split(" ")
                   .map((word) => word[0].toUpperCase() + word.substring(1))
                   .join(" "),
@@ -168,7 +128,7 @@ class _HomeBodyState extends State<HomeBody> {
               ),
             ),
             Text(
-              widget.college,
+              'School of Engineering',
               style: GoogleFonts.inter(
                 color: Colors.black,
                 fontWeight: FontWeight.normal,
@@ -189,7 +149,7 @@ class _HomeBodyState extends State<HomeBody> {
               child: Column(
                 children: [
                   Text(
-                    "${widget.pickupPoint},"
+                    "pickup point,"
                         .split(" ")
                         .map(
                             (word) => word[0].toUpperCase() + word.substring(1))
@@ -201,7 +161,7 @@ class _HomeBodyState extends State<HomeBody> {
                     ),
                   ),
                   Text(
-                    widget.pickupArea,
+                    'pickup area',
                     style: GoogleFonts.inter(
                       color: Colors.white,
                       fontWeight: FontWeight.normal,

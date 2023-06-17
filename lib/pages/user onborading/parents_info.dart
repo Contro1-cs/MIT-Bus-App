@@ -180,15 +180,7 @@ class _ParentsInfoState extends State<ParentsInfo> {
                     PageRouteBuilder(
                       transitionDuration: const Duration(milliseconds: 500),
                       pageBuilder: (context, animation, secondaryAnimation) {
-                        return HomePage(
-                          studentName: widget.studentname,
-                          parentsName: _parentsName.text,
-                          pendingFees: _isFeesPaid ? 0 : _pendingFees.text,
-                          pickupArea: widget.PickupArea,
-                          pickupPoint: widget.pickupPoint,
-                          parentsPhone: _parentsPhone.text,
-                          college: widget.college,
-                        );
+                        return const HomePage();
                       },
                       transitionsBuilder:
                           (context, animation, secondaryAnimation, child) {
