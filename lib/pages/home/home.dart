@@ -149,7 +149,7 @@ class _HomeBodyState extends State<HomeBody> {
               child: Column(
                 children: [
                   Text(
-                    "pickup point,"
+                    "Seasons Mall,"
                         .split(" ")
                         .map(
                             (word) => word[0].toUpperCase() + word.substring(1))
@@ -161,7 +161,7 @@ class _HomeBodyState extends State<HomeBody> {
                     ),
                   ),
                   Text(
-                    'pickup area',
+                    'Hadapsar',
                     style: GoogleFonts.inter(
                       color: Colors.white,
                       fontWeight: FontWeight.normal,

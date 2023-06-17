@@ -1,11 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mit_bus_app/pages/landing_page.dart';
-import 'package:mit_bus_app/pages/user%20onborading/otp_page.dart';
 import 'package:mit_bus_app/pages/user%20onborading/register_page.dart';
-import 'package:mit_bus_app/widgets/form_field.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -21,7 +18,6 @@ TextEditingController _authPassword = TextEditingController();
 
 class _LoginPageState extends State<LoginPage> {
   @override
-  TextEditingController _phoneNoController = TextEditingController();
   Widget build(BuildContext context) {
     var h = MediaQuery.of(context).size.height;
     var w = MediaQuery.of(context).size.width;
@@ -163,7 +159,7 @@ class _LoginPageState extends State<LoginPage> {
                     children: [
                       GestureDetector(
                         onTap: () async {
-                          
+
                         },
                         child: Container(
                           width: w,
