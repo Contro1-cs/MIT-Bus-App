@@ -221,3 +221,9 @@ List busList = [
   'c1',
   'd1',
 ];
+List userType = [
+  'Student',
+  'Faculty',
+  'Driver',
+  'Admin',
+];
