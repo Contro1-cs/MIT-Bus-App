@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mit_bus_app/lists/lists.dart';
-import 'package:mit_bus_app/pages/home/home.dart';
 import 'package:mit_bus_app/pages/landing_page.dart';
 import 'package:mit_bus_app/pages/user%20onborading/student_registeration.dart';
 import 'package:mit_bus_app/widgets/drop_down.dart';
@@ -153,7 +152,7 @@ class _FacultyRegisterationState extends State<FacultyRegisteration> {
                           transitionDuration: const Duration(milliseconds: 500),
                           pageBuilder:
                               (context, animation, secondaryAnimation) {
-                            return const StudentRegisteration();
+                            return StudentRegisteration(userType: userType[1],);
                           },
                           transitionsBuilder:
                               (context, animation, secondaryAnimation, child) {

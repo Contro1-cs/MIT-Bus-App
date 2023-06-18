@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mit_bus_app/pages/home/home.dart';
 import 'package:mit_bus_app/pages/landing_page.dart';
 import 'package:mit_bus_app/pages/user%20onborading/login_page.dart';
-import 'package:mit_bus_app/pages/user%20onborading/otp_page.dart';
-import 'package:mit_bus_app/widgets/form_field.dart';
+import 'package:mit_bus_app/widgets/custom_texts.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -107,11 +107,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                         const Duration(milliseconds: 500),
                                     pageBuilder: (context, animation,
                                         secondaryAnimation) {
-                                      return OTPScreen(
-                                        phoneNumber: _phoneNoController.text,
-                                        isStudent: _isStudent,
-                                        isLogin: false,
-                                      );
+                                      return const  HomePage();
                                     },
                                     transitionsBuilder: (context, animation,
                                         secondaryAnimation, child) {
@@ -149,7 +145,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                           child: Center(
                             child: Text(
-                              "Verify OTP",
+                              "Register",
                               style: GoogleFonts.inter(
                                 textStyle: const TextStyle(
                                   color: Colors.white,
