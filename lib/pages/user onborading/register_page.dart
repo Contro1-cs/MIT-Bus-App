@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:mit_bus_app/pages/home/home.dart';
 import 'package:mit_bus_app/pages/landing_page.dart';
 import 'package:mit_bus_app/pages/user%20onborading/login_page.dart';
-import 'package:mit_bus_app/widgets/form_field.dart';
+import 'package:mit_bus_app/widgets/custom_texts.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -145,7 +145,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                           child: Center(
                             child: Text(
-                              "Verify OTP",
+                              "Register",
                               style: GoogleFonts.inter(
                                 textStyle: const TextStyle(
                                   color: Colors.white,

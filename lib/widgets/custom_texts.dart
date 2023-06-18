@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mit_bus_app/pages/home/profile.dart';
 import 'package:mit_bus_app/pages/landing_page.dart';
 
 class CustomFormField extends StatefulWidget {
@@ -51,6 +52,57 @@ class _CustomFormFieldState extends State<CustomFormField> {
                 borderSide: BorderSide(color: Colors.black),
               ),
               focusedBorder: const UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.black),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class ProfileFormField extends StatefulWidget {
+  final TextEditingController controller;
+  final String title;
+  const ProfileFormField({
+    super.key,
+    required this.controller,
+    required this.title,
+  });
+
+  @override
+  State<ProfileFormField> createState() => _ProfileFormFieldState();
+}
+
+class _ProfileFormFieldState extends State<ProfileFormField> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 35),
+      alignment: Alignment.centerLeft,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            widget.title,
+            style: GoogleFonts.poppins(
+              textStyle: const TextStyle(
+                color: Colors.black,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          TextField(
+            controller: widget.controller,
+            keyboardType: TextInputType.name,
+            decoration: const InputDecoration(
+              enabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.black),
+              ),
+              focusedBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.black),
               ),
             ),

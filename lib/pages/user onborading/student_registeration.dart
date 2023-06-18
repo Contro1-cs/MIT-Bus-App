@@ -7,7 +7,7 @@ import 'package:mit_bus_app/pages/landing_page.dart';
 import 'package:mit_bus_app/pages/user%20onborading/parents_info.dart';
 import 'package:mit_bus_app/widgets/custom_snackbars.dart';
 import 'package:mit_bus_app/widgets/drop_down.dart';
-import 'package:mit_bus_app/widgets/form_field.dart';
+import 'package:mit_bus_app/widgets/custom_texts.dart';
 
 class StudentRegisteration extends StatefulWidget {
   String userType;

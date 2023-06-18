@@ -7,7 +7,7 @@ import 'package:mit_bus_app/pages/home/home.dart';
 import 'package:mit_bus_app/pages/landing_page.dart';
 import 'package:mit_bus_app/widgets/custom_snackbars.dart';
 import 'package:mit_bus_app/widgets/drop_down.dart';
-import 'package:mit_bus_app/widgets/form_field.dart';
+import 'package:mit_bus_app/widgets/custom_texts.dart';
 
 class ParentsInfo extends StatefulWidget {
   String studentName;
@@ -39,7 +39,7 @@ var _busAllocated = busList[0];
 class _ParentsInfoState extends State<ParentsInfo> {
   @override
   Widget build(BuildContext context) {
-    
+
     final FirebaseAuth auth = FirebaseAuth.instance;
     final User user = auth.currentUser!;
     final uid = user.uid;
