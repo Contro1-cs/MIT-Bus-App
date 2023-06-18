@@ -31,58 +31,6 @@ class _StudentRegisterationState extends State<StudentRegisteration> {
 
   @override
   Widget build(BuildContext context) {
-    final FirebaseAuth auth = FirebaseAuth.instance;
-    final User user = auth.currentUser!;
-    final uid = user.uid;
-    CollectionReference users = FirebaseFirestore.instance.collection('users');
-    Future<void> addUser() {
-      return users.doc(uid).set({
-        'name': name.text.trim(),
-        'userType': widget.userType,
-        'college': _college,
-        'year': _year,
-        'pickUpPoint': _pickUpPoint,
-        'area': _area,
-      }).then(
-        (value) {
-          successSnackbar(context, "User Added");
-          name.text = '';
-          _termsNcondition = false;
-          Navigator.push(
-            context,
-            PageRouteBuilder(
-              transitionDuration: const Duration(milliseconds: 500),
-              pageBuilder: (context, animation, secondaryAnimation) {
-                return ParentsInfo(
-                  studentname: name.text,
-                  pickupPoint: _pickUpPoint,
-                  PickupArea: _area,
-                  college: _college,
-                );
-              },
-              transitionsBuilder:
-                  (context, animation, secondaryAnimation, child) {
-                var begin = const Offset(1.0, 0.0);
-                var end = Offset.zero;
-                var curve = Curves.ease;
-
-                var tween = Tween(begin: begin, end: end)
-                    .chain(CurveTween(curve: curve));
-
-                return SlideTransition(
-                  position: animation.drive(tween),
-                  child: child,
-                );
-              },
-            ),
-          );
-        },
-      ).catchError(
-          (error) => errorSnackbar(context, "Failed to add user: $error####"));
-    }
-
-    FirebaseFirestore firestore = FirebaseFirestore.instance;
-    final userID = FirebaseAuth.instance.currentUser?.uid;
     var h = MediaQuery.of(context).size.height;
     var w = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -235,7 +183,36 @@ class _StudentRegisterationState extends State<StudentRegisteration> {
               GestureDetector(
                 onTap: () async {
                   if (name.text.trim().isNotEmpty && _termsNcondition) {
-                    addUser();
+                    Navigator.push(
+                      context,
+                      PageRouteBuilder(
+                        transitionDuration: const Duration(milliseconds: 500),
+                        pageBuilder: (context, animation, secondaryAnimation) {
+                          return ParentsInfo(
+                            studentName: name.text.trim(),
+                            userType: widget.userType,
+                            college: _college,
+                            year: _year,
+                            pickupPoint: _pickUpPoint,
+                            pickupArea: _area,
+                          );
+                        },
+                        transitionsBuilder:
+                            (context, animation, secondaryAnimation, child) {
+                          var begin = const Offset(1.0, 0.0);
+                          var end = Offset.zero;
+                          var curve = Curves.ease;
+
+                          var tween = Tween(begin: begin, end: end)
+                              .chain(CurveTween(curve: curve));
+
+                          return SlideTransition(
+                            position: animation.drive(tween),
+                            child: child,
+                          );
+                        },
+                      ),
+                    );
                   } else if (name.text.trim().isEmpty) {
                     errorSnackbar(context, 'Please enter your name');
                   } else if (!_termsNcondition) {

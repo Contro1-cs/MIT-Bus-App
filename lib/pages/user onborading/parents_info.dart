@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mit_bus_app/lists/lists.dart';
@@ -8,17 +10,21 @@ import 'package:mit_bus_app/widgets/drop_down.dart';
 import 'package:mit_bus_app/widgets/form_field.dart';
 
 class ParentsInfo extends StatefulWidget {
-  const ParentsInfo({
+  String studentName;
+  String college;
+  String year;
+  String pickupArea;
+  String pickupPoint;
+  String userType;
+  ParentsInfo({
     super.key,
-    required this.studentname,
-    required this.pickupPoint,
-    required this.PickupArea,
+    required this.studentName,
     required this.college,
+    required this.year,
+    required this.pickupArea,
+    required this.pickupPoint,
+    required this.userType,
   });
-  final String studentname;
-  final String pickupPoint;
-  final String PickupArea;
-  final String college;
 
   @override
   State<ParentsInfo> createState() => _ParentsInfoState();
@@ -33,6 +39,52 @@ var _busAllocated = busList[0];
 class _ParentsInfoState extends State<ParentsInfo> {
   @override
   Widget build(BuildContext context) {
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    final User user = auth.currentUser!;
+    final uid = user.uid;
+    CollectionReference users = FirebaseFirestore.instance.collection('users');
+    Future<void> addParentsData() {
+      return users.doc(uid).set({
+        'studentName': widget.studentName,
+        'userType': widget.userType,
+        'college': widget.college,
+        'year': widget.year,
+        'pickupArea': widget.pickupArea,
+        'pickupPoint': widget.pickupPoint,
+        'parentName': _parentsName.text.trim(),
+        'parentPhone': _parentsPhone.text.trim(),
+        'pendingFees': _isFeesPaid ? 0 : _pendingFees.text.trim(),
+      }).then(
+        (value) {
+          successSnackbar(context, "User Added");
+          Navigator.push(
+            context,
+            PageRouteBuilder(
+              transitionDuration: const Duration(milliseconds: 500),
+              pageBuilder: (context, animation, secondaryAnimation) {
+                return const HomePage();
+              },
+              transitionsBuilder:
+                  (context, animation, secondaryAnimation, child) {
+                var begin = const Offset(1.0, 0.0);
+                var end = Offset.zero;
+                var curve = Curves.ease;
+
+                var tween = Tween(begin: begin, end: end)
+                    .chain(CurveTween(curve: curve));
+
+                return SlideTransition(
+                  position: animation.drive(tween),
+                  child: child,
+                );
+              },
+            ),
+          );
+        },
+      ).catchError(
+          (error) => errorSnackbar(context, "Failed to add user: $error####"));
+    }
+
     var w = MediaQuery.of(context).size.width;
     var h = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -175,29 +227,7 @@ class _ParentsInfoState extends State<ParentsInfo> {
               onTap: () {
                 if (_parentsName.text.trim().isNotEmpty &&
                     _parentsPhone.text.trim().isNotEmpty) {
-                  Navigator.push(
-                    context,
-                    PageRouteBuilder(
-                      transitionDuration: const Duration(milliseconds: 500),
-                      pageBuilder: (context, animation, secondaryAnimation) {
-                        return const HomePage();
-                      },
-                      transitionsBuilder:
-                          (context, animation, secondaryAnimation, child) {
-                        var begin = const Offset(1.0, 0.0);
-                        var end = Offset.zero;
-                        var curve = Curves.ease;
-
-                        var tween = Tween(begin: begin, end: end)
-                            .chain(CurveTween(curve: curve));
-
-                        return SlideTransition(
-                          position: animation.drive(tween),
-                          child: child,
-                        );
-                      },
-                    ),
-                  );
+                  addParentsData();
                 } else {
                   errorSnackbar(context, 'Please fill all necessary fields');
                 }
