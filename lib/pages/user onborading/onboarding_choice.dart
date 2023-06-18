@@ -3,8 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mit_bus_app/lists/lists.dart';
 import 'package:mit_bus_app/pages/landing_page.dart';
+import 'package:mit_bus_app/pages/user%20onborading/faculty_registeration.dart';
 import 'package:mit_bus_app/pages/user%20onborading/register_page.dart';
+import 'package:mit_bus_app/pages/user%20onborading/student_registeration.dart';
 import 'package:mit_bus_app/widgets/custom_snackbars.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class OnboardingChoice extends StatefulWidget {
   const OnboardingChoice({super.key});
@@ -17,10 +20,36 @@ TextEditingController _authEmailController = TextEditingController();
 TextEditingController _authPasswordController = TextEditingController();
 String _userTypeValue = "Student";
 bool _hidePassword = true;
+bool _loading = false;
 
 class OnboardingChoiceState extends State<OnboardingChoice> {
   @override
+  void dispose() {
+    _authEmailController.text = '';
+    _authPasswordController.text = '';
+    _userTypeValue = userType[0];
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    var h = MediaQuery.of(context).size.height;
+    var w = MediaQuery.of(context).size.width;
+    FirebaseAuth auth = FirebaseAuth.instance;
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    final userID = FirebaseAuth.instance.currentUser?.uid;
+
+    CollectionReference users = FirebaseFirestore.instance.collection('users');
+    Future<void> addUserType() {
+      return users
+          .add({
+            'user_type': _userTypeValue,
+          })
+          .then((value) => debugPrint("#####User type uploaded successfully"))
+          .catchError(
+              (error) => debugPrint("####Failed to upload data: $error"));
+    }
+
     emailRegisteration(String email, String password) async {
       try {
         await FirebaseAuth.instance.createUserWithEmailAndPassword(
@@ -28,6 +57,37 @@ class OnboardingChoiceState extends State<OnboardingChoice> {
           password: password,
         );
         successSnackbar(context, 'Login successful');
+
+        // ignore: use_build_context_synchronously
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            transitionDuration: const Duration(milliseconds: 500),
+            pageBuilder: (context, animation, secondaryAnimation) {
+              if (_userTypeValue == userType[0]) {
+                return StudentRegisteration(
+                  userType: _userTypeValue.trim(),
+                );
+              } else {
+                return const FacultyRegisteration();
+              }
+            },
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              var begin = const Offset(1.0, 0.0);
+              var end = Offset.zero;
+              var curve = Curves.ease;
+
+              var tween =
+                  Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+              return SlideTransition(
+                position: animation.drive(tween),
+                child: child,
+              );
+            },
+          ),
+        );
       } on FirebaseAuthException catch (e) {
         if (e.code == 'weak-password') {
           errorSnackbar(context, 'Please enter a stronger password');
@@ -40,11 +100,8 @@ class OnboardingChoiceState extends State<OnboardingChoice> {
       }
     }
 
-    var h = MediaQuery.of(context).size.height;
-    var w = MediaQuery.of(context).size.width;
-    FirebaseAuth auth = FirebaseAuth.instance;
-
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         toolbarHeight: 150,
         backgroundColor: purple,
@@ -188,17 +245,41 @@ class OnboardingChoiceState extends State<OnboardingChoice> {
             children: [
               GestureDetector(
                 onTap: () async {
-                  if (_authEmailController.text.trim().isEmpty ||
-                      _authEmailController.text.contains('@') == false) {
-                    errorSnackbar(context, 'Please enter a valid email');
-                  } else if (_authPasswordController.text.trim().isEmpty) {
-                    errorSnackbar(context, 'Please enter a valid password');
-                  } else {
-                    emailRegisteration(
-                      _authEmailController.text.trim(),
-                      _authPasswordController.text.toString(),
-                    );
-                  }
+                  _loading
+                      ? null
+                      : {
+                          setState(() {
+                            _loading = true;
+                          }),
+                          if (_authEmailController.text.trim().isEmpty ||
+                              _authEmailController.text.contains('@') == false)
+                            {
+                              setState(() {
+                                _loading = false;
+                              }),
+                              errorSnackbar(
+                                  context, 'Please enter a valid email'),
+                            }
+                          else if (_authPasswordController.text.trim().isEmpty)
+                            {
+                              setState(() {
+                                _loading = false;
+                              }),
+                              errorSnackbar(
+                                  context, 'Please enter a valid p+assword'),
+                            }
+                          else
+                            {
+                              emailRegisteration(
+                                _authEmailController.text.trim(),
+                                _authPasswordController.text.toString(),
+                              ),
+                              addUserType,
+                              setState(() {
+                                _loading = false;
+                              }),
+                            }
+                        };
                 },
                 child: Container(
                   width: w,
@@ -209,23 +290,27 @@ class OnboardingChoiceState extends State<OnboardingChoice> {
                     color: purple,
                   ),
                   child: Center(
-                    child: Text(
-                      "Register",
-                      style: GoogleFonts.inter(
-                        textStyle: const TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
+                    child: _loading
+                        ? const CircularProgressIndicator()
+                        : Text(
+                            "Register",
+                            style: GoogleFonts.inter(
+                              textStyle: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
                   ),
                 ),
               ),
               TextButton(
                 onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const RegisterPage())),
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const RegisterPage(),
+                  ),
+                ),
                 child: Text(
                   "New here? Register",
                   style: GoogleFonts.poppins(

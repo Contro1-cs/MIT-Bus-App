@@ -224,6 +224,4 @@ List busList = [
 List userType = [
   'Student',
   'Faculty',
-  'Driver',
-  'Admin',
 ];

@@ -153,7 +153,7 @@ class _FacultyRegisterationState extends State<FacultyRegisteration> {
                           transitionDuration: const Duration(milliseconds: 500),
                           pageBuilder:
                               (context, animation, secondaryAnimation) {
-                            return const StudentRegisteration();
+                            return StudentRegisteration(userType: userType[1],);
                           },
                           transitionsBuilder:
                               (context, animation, secondaryAnimation, child) {
