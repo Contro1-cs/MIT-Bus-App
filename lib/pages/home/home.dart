@@ -22,7 +22,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final pages = [
-      HomeBody(),
+      const HomeBody(),
       const BusPage(),
       const ProfilePage(),
     ];
