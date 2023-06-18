@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -78,189 +80,216 @@ class HomeBody extends StatefulWidget {
 }
 
 class _HomeBodyState extends State<HomeBody> {
-  String memberID = 'ABC123';
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        SvgPicture.asset("lib/assets/bus.svg"),
-        Column(
-          children: [
-            Center(
-              child: Text(
-                'Student Profile',
-                style: GoogleFonts.inter(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 30),
+    CollectionReference users = FirebaseFirestore.instance.collection('users');
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    final User user = auth.currentUser!;
+    final uid = user.uid;
+    return FutureBuilder<DocumentSnapshot>(
+      future: users.doc(uid).get(),
+      builder:
+          (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+        if (snapshot.hasError) {
+          return const Center(child: Text("Something went wrong"));
+        }
+
+        if (snapshot.hasData && !snapshot.data!.exists) {
+          return const Center(child: Text("Document does not exist"));
+        }
+
+        if (snapshot.connectionState == ConnectionState.done) {
+          Map<String, dynamic> data =
+              snapshot.data!.data() as Map<String, dynamic>;
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SvgPicture.asset("lib/assets/bus.svg"),
+              Column(
+                children: [
+                  Center(
+                    child: Text(
+                      '${data['userType']} Profile',
+                      style: GoogleFonts.inter(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 30),
+                    ),
+                  ),
+                  Text(
+                    'MIT ADT University',
+                    style: GoogleFonts.inter(
+                      color: Colors.black,
+                      fontWeight: FontWeight.normal,
+                      fontSize: 12,
+                    ),
+                  ),
+                ],
               ),
-            ),
-            Text(
-              'MIT ADT University',
-              style: GoogleFonts.inter(
+              const Divider(
+                height: 10,
+                thickness: 2,
                 color: Colors.black,
-                fontWeight: FontWeight.normal,
-                fontSize: 12,
+                indent: 100,
+                endIndent: 100,
               ),
-            ),
-          ],
-        ),
-        const Divider(
-          height: 10,
-          thickness: 2,
-          color: Colors.black,
-          indent: 100,
-          endIndent: 100,
-        ),
-        Column(
-          children: [
-            Text(
-              'aaditya jagdale'
-                  .split(" ")
-                  .map((word) => word[0].toUpperCase() + word.substring(1))
-                  .join(" "),
-              style: GoogleFonts.inter(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-                fontSize: 30,
-              ),
-            ),
-            Text(
-              'School of Engineering',
-              style: GoogleFonts.inter(
-                color: Colors.black,
-                fontWeight: FontWeight.normal,
-                fontSize: 14,
-              ),
-            ),
-          ],
-        ),
-        Column(
-          children: [
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 30),
-              padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                color: purple,
-              ),
-              child: Column(
+              Column(
                 children: [
                   Text(
-                    "Seasons Mall,"
+                    data['studentName']
                         .split(" ")
                         .map(
                             (word) => word[0].toUpperCase() + word.substring(1))
                         .join(" "),
                     style: GoogleFonts.inter(
-                      color: Colors.white,
+                      color: Colors.black,
                       fontWeight: FontWeight.bold,
-                      fontSize: 20,
+                      fontSize: 30,
                     ),
                   ),
                   Text(
-                    'Hadapsar',
+                    data['college'],
                     style: GoogleFonts.inter(
-                      color: Colors.white,
+                      color: Colors.black,
                       fontWeight: FontWeight.normal,
                       fontSize: 14,
                     ),
                   ),
                 ],
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(5),
-              child: Transform.rotate(
-                angle: 90 * math.pi / 180,
-                child: const Icon(
-                  Icons.swap_horiz,
-                  size: 30,
-                  color: Colors.black,
-                ),
-              ),
-            ),
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 30),
-              padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                color: purple,
-              ),
-              child: Column(
+              Column(
                 children: [
-                  Text(
-                    "MIT ADT University,"
-                        .split(" ")
-                        .map(
-                            (word) => word[0].toUpperCase() + word.substring(1))
-                        .join(" "),
-                    style: GoogleFonts.inter(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 30),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 25, vertical: 20),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: purple,
+                    ),
+                    child: Column(
+                      children: [
+                        Text(
+                          data['pickupPoint']
+                              .split(" ")
+                              .map((word) =>
+                                  word[0].toUpperCase() + word.substring(1))
+                              .join(" "),
+                          style: GoogleFonts.inter(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                          ),
+                        ),
+                        Text(
+                          data['pickupArea'],
+                          style: GoogleFonts.inter(
+                            color: Colors.white,
+                            fontWeight: FontWeight.normal,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  Text(
-                    "Loni Kalbhor",
-                    style: GoogleFonts.inter(
-                      color: Colors.white,
-                      fontWeight: FontWeight.normal,
-                      fontSize: 14,
+                  Padding(
+                    padding: const EdgeInsets.all(5),
+                    child: Transform.rotate(
+                      angle: 90 * math.pi / 180,
+                      child: const Icon(
+                        Icons.swap_horiz,
+                        size: 30,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 30),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 25, vertical: 20),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: purple,
+                    ),
+                    child: Column(
+                      children: [
+                        Text(
+                          "MIT ADT University,"
+                              .split(" ")
+                              .map((word) =>
+                                  word[0].toUpperCase() + word.substring(1))
+                              .join(" "),
+                          style: GoogleFonts.inter(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                          ),
+                        ),
+                        Text(
+                          "Loni Kalbhor",
+                          style: GoogleFonts.inter(
+                            color: Colors.white,
+                            fontWeight: FontWeight.normal,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
               ),
-            ),
-          ],
-        ),
-        TextButton(
-          onPressed: () {
-            Clipboard.setData(ClipboardData(text: memberID));
-            var snackBar = const SnackBar(
-              content: Text('Text copied to clipboard'),
-            );
-            ScaffoldMessenger.of(context).showSnackBar(snackBar);
-          },
-          child: Container(
-            margin: const EdgeInsets.symmetric(horizontal: 40),
-            padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              color: purple,
-            ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Icon(
-                  Icons.copy_all,
-                  color: Colors.white,
-                  size: 20,
-                ),
-                Text(
-                  " Member ID: ",
-                  style: GoogleFonts.inter(
-                    color: Colors.white,
-                    fontWeight: FontWeight.normal,
-                    fontSize: 16,
+              TextButton(
+                onPressed: () {
+                  Clipboard.setData(ClipboardData(text: uid));
+                  var snackBar = const SnackBar(
+                    content: Text('Text copied to clipboard'),
+                  );
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                },
+                child: Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 40),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: purple,
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(
+                        Icons.copy_all,
+                        color: Colors.white,
+                        size: 20,
+                      ),
+                      Text(
+                        " Member ID: ",
+                        style: GoogleFonts.inter(
+                          color: Colors.white,
+                          fontWeight: FontWeight.normal,
+                          fontSize: 16,
+                        ),
+                      ),
+                      Text(
+                        uid.substring(0, 10),
+                        style: GoogleFonts.inter(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                Text(
-                  memberID,
-                  style: GoogleFonts.inter(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ],
+              ),
+            ],
+          );
+        }
+
+        return const Center(child: CircularProgressIndicator());
+      },
     );
   }
 }

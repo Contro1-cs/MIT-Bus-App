@@ -39,6 +39,7 @@ var _busAllocated = busList[0];
 class _ParentsInfoState extends State<ParentsInfo> {
   @override
   Widget build(BuildContext context) {
+    
     final FirebaseAuth auth = FirebaseAuth.instance;
     final User user = auth.currentUser!;
     final uid = user.uid;
