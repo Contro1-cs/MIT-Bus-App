@@ -3,7 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:mit_bus_app/pages/landing_page.dart';
 import 'package:mit_bus_app/pages/user%20onborading/login_page.dart';
 import 'package:mit_bus_app/pages/user%20onborading/onboarding_choice.dart';
-import 'package:mit_bus_app/pages/user%20onborading/register_page.dart';
 
 class OnboardingPage extends StatefulWidget {
   const OnboardingPage({super.key});
@@ -128,7 +127,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                                 const Duration(milliseconds: 500),
                             pageBuilder:
                                 (context, animation, secondaryAnimation) {
-                              return const OnboardingChoice();
+                              return const RegisterPage();
                             },
                             transitionsBuilder: (context, animation,
                                 secondaryAnimation, child) {

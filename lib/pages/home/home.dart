@@ -10,6 +10,9 @@ import 'package:mit_bus_app/pages/home/profile.dart';
 import 'package:mit_bus_app/pages/landing_page.dart';
 import 'dart:math' as math;
 
+import 'package:mit_bus_app/pages/user%20onborading/login_page.dart';
+import 'package:mit_bus_app/widgets/custom_snackbars.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -71,9 +74,9 @@ class _HomeBodyState extends State<HomeBody> {
   @override
   Widget build(BuildContext context) {
     CollectionReference users = FirebaseFirestore.instance.collection('users');
-    final FirebaseAuth auth = FirebaseAuth.instance;
-    final User user = auth.currentUser!;
-    final uid = user.uid;
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    final User _user = _auth.currentUser!;
+    final uid = _user.uid;
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -96,6 +99,14 @@ class _HomeBodyState extends State<HomeBody> {
           }
 
           if (snapshot.hasData && !snapshot.data!.exists) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => LoginPage(),
+              ),
+            );
+            errorSnackbar(
+                context, 'Something went wrong. Please log in and try again');
             return const Center(child: Text("Document does not exist"));
           }
 
@@ -239,51 +250,6 @@ class _HomeBodyState extends State<HomeBody> {
                       ),
                     ),
                   ],
-                ),
-                TextButton(
-                  onPressed: () {
-                    Clipboard.setData(ClipboardData(text: uid));
-                    var snackBar = const SnackBar(
-                      content: Text('Text copied to clipboard'),
-                    );
-                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                  },
-                  child: Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 40),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 25, vertical: 20),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      color: purple,
-                    ),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Icon(
-                          Icons.copy_all,
-                          color: Colors.white,
-                          size: 20,
-                        ),
-                        Text(
-                          " Member ID: ",
-                          style: GoogleFonts.inter(
-                            color: Colors.white,
-                            fontWeight: FontWeight.normal,
-                            fontSize: 16,
-                          ),
-                        ),
-                        Text(
-                          uid.substring(0, 10),
-                          style: GoogleFonts.inter(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
                 ),
               ],
             );

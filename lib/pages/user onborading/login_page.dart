@@ -1,8 +1,12 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mit_bus_app/pages/home/home.dart';
 import 'package:mit_bus_app/pages/landing_page.dart';
-import 'package:mit_bus_app/pages/user%20onborading/register_page.dart';
+import 'package:mit_bus_app/pages/user%20onborading/onboarding_choice.dart';
+import 'package:mit_bus_app/widgets/custom_snackbars.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -22,6 +26,45 @@ class _LoginPageState extends State<LoginPage> {
     var h = MediaQuery.of(context).size.height;
     var w = MediaQuery.of(context).size.width;
     final FirebaseAuth auth = FirebaseAuth.instance;
+
+    passwordSignIn() async {
+      try {
+        final credential = await FirebaseAuth.instance
+            .signInWithEmailAndPassword(
+                email: _authEmail.text, password: _authPassword.text);
+        successSnackbar(context, 'Login successful');
+        Navigator.popUntil(context, (route) => false);
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            transitionDuration: const Duration(milliseconds: 500),
+            pageBuilder: (context, animation, secondaryAnimation) {
+              return const HomePage();
+            },
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              var begin = const Offset(1.0, 0.0);
+              var end = Offset.zero;
+              var curve = Curves.ease;
+
+              var tween =
+                  Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+              return SlideTransition(
+                position: animation.drive(tween),
+                child: child,
+              );
+            },
+          ),
+        );
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'user-not-found') {
+          errorSnackbar(context, 'No user found for that email');
+        } else if (e.code == 'wrong-password') {
+          errorSnackbar(context, 'Wrong password provided for that user');
+        }
+      }
+    }
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -47,7 +90,7 @@ class _LoginPageState extends State<LoginPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 50),
                   Image.asset("lib/assets/mit_logo2.png"),
                   Column(
                     children: [
@@ -159,7 +202,13 @@ class _LoginPageState extends State<LoginPage> {
                     children: [
                       GestureDetector(
                         onTap: () async {
-
+                          if (_authEmail.text.trim().isEmpty ||
+                              _authPassword.text.trim().isEmpty) {
+                            errorSnackbar(
+                                context, 'Please enter a email and password');
+                          } else {
+                            passwordSignIn();
+                          }
                         },
                         child: Container(
                           width: w,
@@ -171,7 +220,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           child: Center(
                             child: Text(
-                              "Verify OTP",
+                              "Login",
                               style: GoogleFonts.inter(
                                 textStyle: const TextStyle(
                                   color: Colors.white,

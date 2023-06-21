@@ -4,16 +4,16 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:mit_bus_app/lists/lists.dart';
 import 'package:mit_bus_app/pages/landing_page.dart';
 import 'package:mit_bus_app/pages/user%20onborading/faculty_registeration.dart';
-import 'package:mit_bus_app/pages/user%20onborading/register_page.dart';
+import 'package:mit_bus_app/pages/user%20onborading/login_page.dart';
 import 'package:mit_bus_app/pages/user%20onborading/student_registeration.dart';
 import 'package:mit_bus_app/widgets/custom_snackbars.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class OnboardingChoice extends StatefulWidget {
-  const OnboardingChoice({super.key});
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
 
   @override
-  State<OnboardingChoice> createState() => OnboardingChoiceState();
+  State<RegisterPage> createState() => RegisterPageState();
 }
 
 TextEditingController _authEmailController = TextEditingController();
@@ -22,7 +22,7 @@ String _userTypeValue = "Student";
 bool _hidePassword = true;
 bool _loading = false;
 
-class OnboardingChoiceState extends State<OnboardingChoice> {
+class RegisterPageState extends State<RegisterPage> {
   @override
   void dispose() {
     _authEmailController.text = '';
@@ -308,11 +308,11 @@ class OnboardingChoiceState extends State<OnboardingChoice> {
                 onPressed: () => Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const RegisterPage(),
+                    builder: (context) => const LoginPage(),
                   ),
                 ),
                 child: Text(
-                  "New here? Register",
+                  "Already a member? Login",
                   style: GoogleFonts.poppins(
                     textStyle: TextStyle(
                       color: purple,

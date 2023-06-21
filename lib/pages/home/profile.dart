@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mit_bus_app/pages/landing_page.dart';
+import 'package:mit_bus_app/pages/user%20onborading/login_page.dart';
+import 'package:mit_bus_app/pages/user%20onborading/onboarding_choice.dart';
 import 'package:mit_bus_app/widgets/custom_snackbars.dart';
 import 'package:mit_bus_app/widgets/custom_texts.dart';
 
@@ -89,6 +91,14 @@ class _ProfilePageState extends State<ProfilePage> {
           }
 
           if (snapshot.hasData && !snapshot.data!.exists) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => LoginPage(),
+              ),
+            );
+            errorSnackbar(
+                context, 'Something went wrong. Please log in and try again');
             return const Center(child: Text("Document does not exist"));
           }
 
@@ -194,6 +204,13 @@ class _ProfilePageState extends State<ProfilePage> {
                       GestureDetector(
                         onTap: () {
                           auth.signOut();
+                          Navigator.popUntil(context, (route) => false);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const LandingPage(),
+                            ),
+                          );
                         },
                         child: Container(
                           width: w,

@@ -39,20 +39,41 @@ var _busAllocated = busList[0];
 class _ParentsInfoState extends State<ParentsInfo> {
   @override
   Widget build(BuildContext context) {
-
     final FirebaseAuth auth = FirebaseAuth.instance;
     final User user = auth.currentUser!;
     final uid = user.uid;
     CollectionReference users = FirebaseFirestore.instance.collection('users');
     Future<void> addParentsData() {
       return users.doc(uid).set({
-        'studentName': widget.studentName,
-        'userType': widget.userType,
-        'college': widget.college,
-        'year': widget.year,
-        'pickupArea': widget.pickupArea,
-        'pickupPoint': widget.pickupPoint,
-        'parentName': _parentsName.text.trim(),
+        'studentName': widget.studentName
+            .split(" ")
+            .map((word) => word[0].toUpperCase() + word.substring(1))
+            .join(" "),
+        'userType': widget.userType
+            .split(" ")
+            .map((word) => word[0].toUpperCase() + word.substring(1))
+            .join(" "),
+        'college': widget.college
+            .split(" ")
+            .map((word) => word[0].toUpperCase() + word.substring(1))
+            .join(" "),
+        'year': widget.year
+            .split(" ")
+            .map((word) => word[0].toUpperCase() + word.substring(1))
+            .join(" "),
+        'pickupArea': widget.pickupArea
+            .split(" ")
+            .map((word) => word[0].toUpperCase() + word.substring(1))
+            .join(" "),
+        'pickupPoint': widget.pickupPoint
+            .split(" ")
+            .map((word) => word[0].toUpperCase() + word.substring(1))
+            .join(" "),
+        'parentName': _parentsName.text
+            .trim()
+            .split(" ")
+            .map((word) => word[0].toUpperCase() + word.substring(1))
+            .join(" "),
         'parentPhone': _parentsPhone.text.trim(),
         'pendingFees': _isFeesPaid ? 0 : _pendingFees.text.trim(),
       }).then(
