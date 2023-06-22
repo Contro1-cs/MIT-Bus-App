@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mit_bus_app/pages/landing_page.dart';
 import 'package:mit_bus_app/pages/user%20onborading/login_page.dart';
-import 'package:mit_bus_app/pages/user%20onborading/onboarding_choice.dart';
 import 'package:mit_bus_app/widgets/custom_snackbars.dart';
 import 'package:mit_bus_app/widgets/custom_texts.dart';
 
@@ -91,12 +90,66 @@ class _ProfilePageState extends State<ProfilePage> {
           }
 
           if (snapshot.hasData && !snapshot.data!.exists) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => LoginPage(),
-              ),
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(
+            //     builder: (context) => LoginPage(),
+            //   ),
+            // );
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Center(
+                  child: Text('Someting went wrong'),
+                ),
+                const SizedBox(height: 20),
+                GestureDetector(
+                  onTap: () {
+                    auth.signOut();
+                    Navigator.popUntil(context, (route) => false);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const LandingPage(),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    width: w,
+                    height: 50,
+                    margin: const EdgeInsets.symmetric(horizontal: 20),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(100),
+                      color: const Color(0xffFF5959),
+                    ),
+                    child: Center(
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(
+                            Icons.logout,
+                            color: Colors.white,
+                          ),
+                          const SizedBox(width: 5),
+                          Text(
+                            "Logout",
+                            style: GoogleFonts.inter(
+                              textStyle: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             );
+
             errorSnackbar(
                 context, 'Something went wrong. Please log in and try again');
             return const Center(child: Text("Document does not exist"));

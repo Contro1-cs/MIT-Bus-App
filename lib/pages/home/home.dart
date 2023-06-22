@@ -1,16 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:mit_bus_app/lists/lists.dart';
 import 'package:mit_bus_app/pages/home/bus.dart';
+import 'package:mit_bus_app/pages/home/faculty_home.dart';
 import 'package:mit_bus_app/pages/home/profile.dart';
-import 'package:mit_bus_app/pages/landing_page.dart';
-import 'dart:math' as math;
+import 'package:mit_bus_app/pages/home/student_home.dart';
 
-import 'package:mit_bus_app/pages/user%20onborading/login_page.dart';
 import 'package:mit_bus_app/widgets/custom_snackbars.dart';
 
 class HomePage extends StatefulWidget {
@@ -99,160 +97,25 @@ class _HomeBodyState extends State<HomeBody> {
           }
 
           if (snapshot.hasData && !snapshot.data!.exists) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => LoginPage(),
-              ),
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(
+            //     builder: (context) => LoginPage(),
+            //   ),
+            // );
+            return const Center(
+              child: Text('Someting went wrong'),
             );
-            errorSnackbar(
-                context, 'Something went wrong. Please log in and try again');
-            return const Center(child: Text("Document does not exist"));
           }
 
           if (snapshot.connectionState == ConnectionState.done) {
             Map<String, dynamic> data =
                 snapshot.data!.data() as Map<String, dynamic>;
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SvgPicture.asset("lib/assets/bus.svg"),
-                Column(
-                  children: [
-                    Center(
-                      child: Text(
-                        '${data['userType']} Profile',
-                        style: GoogleFonts.inter(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 30),
-                      ),
-                    ),
-                    Text(
-                      'MIT ADT University',
-                      style: GoogleFonts.inter(
-                        color: Colors.black,
-                        fontWeight: FontWeight.normal,
-                        fontSize: 12,
-                      ),
-                    ),
-                  ],
-                ),
-                const Divider(
-                  height: 10,
-                  thickness: 2,
-                  color: Colors.black,
-                  indent: 100,
-                  endIndent: 100,
-                ),
-                Column(
-                  children: [
-                    Text(
-                      data['studentName']
-                          .split(" ")
-                          .map((word) =>
-                              word[0].toUpperCase() + word.substring(1))
-                          .join(" "),
-                      style: GoogleFonts.inter(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 30,
-                      ),
-                    ),
-                    Text(
-                      data['college'],
-                      style: GoogleFonts.inter(
-                        color: Colors.black,
-                        fontWeight: FontWeight.normal,
-                        fontSize: 14,
-                      ),
-                    ),
-                  ],
-                ),
-                Column(
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 30),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 25, vertical: 20),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        color: purple,
-                      ),
-                      child: Column(
-                        children: [
-                          Text(
-                            data['pickupPoint']
-                                .split(" ")
-                                .map((word) =>
-                                    word[0].toUpperCase() + word.substring(1))
-                                .join(" "),
-                            style: GoogleFonts.inter(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                            ),
-                          ),
-                          Text(
-                            data['pickupArea'],
-                            style: GoogleFonts.inter(
-                              color: Colors.white,
-                              fontWeight: FontWeight.normal,
-                              fontSize: 14,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(5),
-                      child: Transform.rotate(
-                        angle: 90 * math.pi / 180,
-                        child: const Icon(
-                          Icons.swap_horiz,
-                          size: 30,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                    Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 30),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 25, vertical: 20),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        color: purple,
-                      ),
-                      child: Column(
-                        children: [
-                          Text(
-                            "MIT ADT University,"
-                                .split(" ")
-                                .map((word) =>
-                                    word[0].toUpperCase() + word.substring(1))
-                                .join(" "),
-                            style: GoogleFonts.inter(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                            ),
-                          ),
-                          Text(
-                            "Loni Kalbhor",
-                            style: GoogleFonts.inter(
-                              color: Colors.white,
-                              fontWeight: FontWeight.normal,
-                              fontSize: 14,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            );
+            if (data['userType'] == userType[0]) {
+              return StudentHome(data: data);
+            } else if (data['userType'] == 'Faculty') {
+              return FacultyHome(data: data);
+            }
           }
 
           return const Center(child: CircularProgressIndicator());
