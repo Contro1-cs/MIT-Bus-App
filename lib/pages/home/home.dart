@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:mit_bus_app/lists/lists.dart';
-import 'package:mit_bus_app/pages/home/bus.dart';
+import 'package:mit_bus_app/pages/home/attendance_fees.dart';
 import 'package:mit_bus_app/pages/home/faculty_home.dart';
 import 'package:mit_bus_app/pages/home/profile.dart';
 import 'package:mit_bus_app/pages/home/student_home.dart';
@@ -22,7 +22,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final pages = [
       const HomeBody(),
-      const BusPage(),
+      const AttendanceAndFees(),
       const ProfilePage(),
     ];
     return Scaffold(
@@ -75,11 +75,13 @@ class _HomeBodyState extends State<HomeBody> {
     final uid = _user.uid;
     return Scaffold(
       appBar: AppBar(
+        toolbarHeight: 80,
         title: Text(
           "Home",
           style: GoogleFonts.inter(
             color: Colors.white,
             fontWeight: FontWeight.bold,
+            fontSize: 40,
           ),
         ),
         backgroundColor: const Color(0xff202020),

@@ -52,7 +52,7 @@ class _StudentProfileState extends State<StudentProfile> {
 
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 150,
+        toolbarHeight: 80,
         title: Text(
           "Student Profile",
           style: GoogleFonts.inter(
