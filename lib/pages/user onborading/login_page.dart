@@ -25,7 +25,6 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     var h = MediaQuery.of(context).size.height;
     var w = MediaQuery.of(context).size.width;
-    final FirebaseAuth auth = FirebaseAuth.instance;
 
     passwordSignIn() async {
       try {

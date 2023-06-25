@@ -18,7 +18,7 @@ class _StudentProfileState extends State<StudentProfile> {
   final TextEditingController _studentNameController = TextEditingController();
   final TextEditingController _parentNameController = TextEditingController();
   final TextEditingController _parentPhoneController = TextEditingController();
-  final TextEditingController _pendingFeesController = TextEditingController();
+  // final TextEditingController _pendingFeesController = TextEditingController();
   final TextEditingController _pickupAreaController = TextEditingController();
   final TextEditingController _pickupPointController = TextEditingController();
   final TextEditingController _yearController = TextEditingController();
@@ -47,7 +47,7 @@ class _StudentProfileState extends State<StudentProfile> {
               (error) => errorSnackbar(context, 'Failed to upload data.'));
     }
 
-    var h = MediaQuery.of(context).size.height;
+    // var h = MediaQuery.of(context).size.height;
     var w = MediaQuery.of(context).size.width;
 
     return Scaffold(

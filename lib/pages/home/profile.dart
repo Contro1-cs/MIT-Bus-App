@@ -6,8 +6,6 @@ import 'package:mit_bus_app/lists/lists.dart';
 import 'package:mit_bus_app/pages/home/faculty_profile.dart';
 import 'package:mit_bus_app/pages/home/student_profile.dart';
 import 'package:mit_bus_app/pages/landing_page.dart';
-import 'package:mit_bus_app/widgets/custom_snackbars.dart';
-import 'package:mit_bus_app/widgets/custom_texts.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -19,7 +17,7 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
-    var h = MediaQuery.of(context).size.height;
+    // var h = MediaQuery.of(context).size.height;
     var w = MediaQuery.of(context).size.width;
     final FirebaseAuth auth = FirebaseAuth.instance;
     final User user = auth.currentUser!;

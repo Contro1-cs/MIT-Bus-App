@@ -27,7 +27,7 @@ class _FacultyRegisterationState extends State<FacultyRegisteration> {
   var _area = areas[0];
   @override
   Widget build(BuildContext context) {
-    var h = MediaQuery.of(context).size.height;
+    // var h = MediaQuery.of(context).size.height;
     var w = MediaQuery.of(context).size.width;
     final FirebaseAuth auth = FirebaseAuth.instance;
     final User user = auth.currentUser!;

@@ -108,7 +108,7 @@ class _ParentsInfoState extends State<ParentsInfo> {
     }
 
     var w = MediaQuery.of(context).size.width;
-    var h = MediaQuery.of(context).size.height;
+    // var h = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 150,
