@@ -33,11 +33,8 @@ class RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
-    var h = MediaQuery.of(context).size.height;
+    // var h = MediaQuery.of(context).size.height;
     var w = MediaQuery.of(context).size.width;
-    FirebaseAuth auth = FirebaseAuth.instance;
-    FirebaseFirestore firestore = FirebaseFirestore.instance;
-    final userID = FirebaseAuth.instance.currentUser?.uid;
 
     CollectionReference users = FirebaseFirestore.instance.collection('users');
     Future<void> addUserType() {

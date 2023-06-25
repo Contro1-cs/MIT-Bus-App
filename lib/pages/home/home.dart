@@ -9,8 +9,6 @@ import 'package:mit_bus_app/pages/home/faculty_home.dart';
 import 'package:mit_bus_app/pages/home/profile.dart';
 import 'package:mit_bus_app/pages/home/student_home.dart';
 
-import 'package:mit_bus_app/widgets/custom_snackbars.dart';
-
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 

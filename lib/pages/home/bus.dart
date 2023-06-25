@@ -1,9 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mit_bus_app/pages/landing_page.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class BusPage extends StatefulWidget {
@@ -24,15 +22,15 @@ class _BusPageState extends State<BusPage> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Center(
-          child: QrImage(
+          child: QrImageView(
             data: uid,
             version: QrVersions.auto,
             size: 250,
             gapless: false,
             embeddedImage:
                 const AssetImage('assets/images/my_embedded_image.png'),
-            embeddedImageStyle: QrEmbeddedImageStyle(
-              size: const Size(30, 30),
+            embeddedImageStyle: const QrEmbeddedImageStyle(
+              size: Size(30, 30),
             ),
           ),
         ),
