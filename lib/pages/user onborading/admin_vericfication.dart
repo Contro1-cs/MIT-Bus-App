@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mit_bus_app/admin/admin_view.dart';
-import 'package:mit_bus_app/pages/home/home.dart';
 import 'package:mit_bus_app/pages/landing_page.dart';
 import 'package:mit_bus_app/widgets/custom_snackbars.dart';
 import 'package:mit_bus_app/widgets/custom_texts.dart';

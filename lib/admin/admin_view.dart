@@ -15,7 +15,7 @@ class _AdminViewState extends State<AdminView> {
   @override
   Widget build(BuildContext context) {
     var w = MediaQuery.of(context).size.width;
-    var h = MediaQuery.of(context).size.height;
+    // var h = MediaQuery.of(context).size.height;
 
     return WillPopScope(
       child: Scaffold(

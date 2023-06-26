@@ -23,7 +23,7 @@ TextEditingController _pendingFees = TextEditingController();
 
 class _FacultyRegistrationState extends State<FacultyRegistration> {
   var _college = college[0];
-  var _year = year[0];
+  // var _year = year[0];
   var _pickUpPoint = pickUpPoint[0];
   var _area = areas[0];
   @override
