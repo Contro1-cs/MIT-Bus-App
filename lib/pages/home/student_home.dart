@@ -51,7 +51,7 @@ class _StudentHomeState extends State<StudentHome> {
         Column(
           children: [
             Text(
-              widget.data['studentName']
+              widget.data['userName']
                   .split(" ")
                   .map((word) => word[0].toUpperCase() + word.substring(1))
                   .join(" "),

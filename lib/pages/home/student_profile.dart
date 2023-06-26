@@ -22,6 +22,8 @@ class _StudentProfileState extends State<StudentProfile> {
   final TextEditingController _pickupAreaController = TextEditingController();
   final TextEditingController _pickupPointController = TextEditingController();
   final TextEditingController _yearController = TextEditingController();
+  bool _refreshing = false;
+
   @override
   Widget build(BuildContext context) {
     final FirebaseAuth auth = FirebaseAuth.instance;
@@ -29,11 +31,43 @@ class _StudentProfileState extends State<StudentProfile> {
     final uid = user.uid;
     CollectionReference users = FirebaseFirestore.instance.collection('users');
 
+    Future<void> refreshProfile() async {
+      try {
+        setState(() {
+          // Reset the text controllers
+          _studentNameController.text = '';
+          _yearController.text = '';
+          _parentNameController.text = '';
+          _parentPhoneController.text = '';
+          _pickupPointController.text = '';
+          _pickupAreaController.text = '';
+        });
+
+        // Fetch the updated user data from Firestore
+        DocumentSnapshot snapshot = await users.doc(uid).get();
+        if (snapshot.exists) {
+          Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
+          setState(() {
+            // Update the text controllers with the fetched data
+            _studentNameController.text = data['userName'];
+            _yearController.text = data['year'];
+            _parentNameController.text = data['parentName'];
+            _parentPhoneController.text = data['parentPhone'];
+            _pickupPointController.text = data['pickupPoint'];
+            _pickupAreaController.text = data['pickupArea'];
+          });
+        }
+      } catch (error) {
+        // Handle any errors that occur during the refresh process
+        errorSnackbar(context, 'Failed to refresh profile.');
+      }
+    }
+
     Future<void> updateUser() {
       return users
           .doc(uid)
           .update({
-            'studentName': _studentNameController.text,
+            'userName': _studentNameController.text,
             'year': _yearController.text,
             'pickupArea': _pickupAreaController.text,
             'pickupPoint': _pickupPointController.text,
@@ -52,7 +86,7 @@ class _StudentProfileState extends State<StudentProfile> {
 
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 150,
+        toolbarHeight: 80,
         title: Text(
           "Student Profile",
           style: GoogleFonts.inter(
@@ -138,7 +172,7 @@ class _StudentProfileState extends State<StudentProfile> {
           if (snapshot.connectionState == ConnectionState.done) {
             Map<String, dynamic> data =
                 snapshot.data!.data() as Map<String, dynamic>;
-            _studentNameController.text = data['studentName'];
+            _studentNameController.text = data['userName'];
             _yearController.text = data['year'];
             _parentNameController.text = data['parentName'];
             _parentPhoneController.text = data['parentPhone'];
@@ -148,139 +182,154 @@ class _StudentProfileState extends State<StudentProfile> {
               child: Scrollbar(
                 thickness: 10,
                 thumbVisibility: true,
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 30),
-                      ProfileFormField(
-                        controller: _studentNameController,
-                        title: 'Student\'s Name',
-                      ),
-                      const SizedBox(height: 30),
-                      ProfileFormField(
-                        controller: _yearController,
-                        title: 'Year',
-                      ),
-                      const SizedBox(height: 30),
-                      ProfileFormField(
-                        controller: _parentNameController,
-                        title: 'Parent\'s Name',
-                      ),
-                      const SizedBox(height: 30),
-                      ProfileFormField(
-                        controller: _parentPhoneController,
-                        title: 'Parent\'s Phone Number',
-                      ),
-                      const SizedBox(height: 30),
-                      ProfileFormField(
-                        controller: _pickupPointController,
-                        title: 'Pickup Point',
-                      ),
-                      const SizedBox(height: 30),
-                      ProfileFormField(
-                        controller: _pickupAreaController,
-                        title: 'Pickup Area',
-                      ),
-                      const SizedBox(height: 30),
-                      GestureDetector(
-                        onTap: () {
-                          if (_studentNameController.text !=
-                                  data['studentName'] ||
-                              _yearController.text != data['year'] ||
-                              _parentNameController.text !=
-                                  data['parentName'] ||
-                              _parentPhoneController.text !=
-                                  data['parentPhone'] ||
-                              _pickupPointController.text !=
-                                  data['pickupPoint'] ||
-                              _pickupAreaController.text !=
-                                  data['pickupArea']) {
-                            updateUser();
-                          } else {
-                            errorSnackbar(context,
-                                'Please change the data you want to update');
-                          }
-                        },
-                        child: Container(
-                          width: w,
-                          height: 50,
-                          margin: const EdgeInsets.symmetric(horizontal: 20),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(100),
-                            color: purple,
-                          ),
-                          child: Center(
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const Icon(
-                                  Icons.upload,
-                                  color: Colors.white,
+                child: _refreshing
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            const SizedBox(height: 30),
+                            ProfileFormField(
+                              controller: _studentNameController,
+                              title: 'Student\'s Name',
+                            ),
+                            const SizedBox(height: 30),
+                            ProfileFormField(
+                              controller: _yearController,
+                              title: 'Year',
+                            ),
+                            const SizedBox(height: 30),
+                            ProfileFormField(
+                              controller: _parentNameController,
+                              title: 'Parent\'s Name',
+                            ),
+                            const SizedBox(height: 30),
+                            ProfileFormField(
+                              controller: _parentPhoneController,
+                              title: 'Parent\'s Phone Number',
+                            ),
+                            const SizedBox(height: 30),
+                            ProfileFormField(
+                              controller: _pickupPointController,
+                              title: 'Pickup Point',
+                            ),
+                            const SizedBox(height: 30),
+                            ProfileFormField(
+                              controller: _pickupAreaController,
+                              title: 'Pickup Area',
+                            ),
+                            const SizedBox(height: 30),
+                            GestureDetector(
+                              onTap: () {
+                                if (_studentNameController.text !=
+                                        data['userName'] ||
+                                    _yearController.text != data['year'] ||
+                                    _parentNameController.text !=
+                                        data['parentName'] ||
+                                    _parentPhoneController.text !=
+                                        data['parentPhone'] ||
+                                    _pickupPointController.text !=
+                                        data['pickupPoint'] ||
+                                    _pickupAreaController.text !=
+                                        data['pickupArea']) {
+                                  updateUser();
+                                  setState(() {
+                                    _refreshing = true;
+                                  });
+                                  refreshProfile();
+                                  setState(() {
+                                    _refreshing = false;
+                                  });
+                                } else {
+                                  errorSnackbar(context,
+                                      'Please change the data you want to update');
+                                }
+                              },
+                              child: Container(
+                                width: w,
+                                height: 50,
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 20),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(100),
+                                  color: purple,
                                 ),
-                                const SizedBox(width: 5),
-                                Text(
-                                  "Update",
-                                  style: GoogleFonts.inter(
-                                    textStyle: const TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                child: Center(
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const Icon(
+                                        Icons.upload,
+                                        color: Colors.white,
+                                      ),
+                                      const SizedBox(width: 5),
+                                      Text(
+                                        "Update",
+                                        style: GoogleFonts.inter(
+                                          textStyle: const TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                              ],
+                              ),
                             ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      GestureDetector(
-                        onTap: () {
-                          auth.signOut();
-                          Navigator.popUntil(context, (route) => false);
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const LandingPage(),
-                            ),
-                          );
-                        },
-                        child: Container(
-                          width: w,
-                          height: 50,
-                          margin: const EdgeInsets.symmetric(horizontal: 20),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(100),
-                            color: const Color(0xffFF5959),
-                          ),
-                          child: Center(
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const Icon(
-                                  Icons.logout,
-                                  color: Colors.white,
+                            const SizedBox(height: 10),
+                            GestureDetector(
+                              onTap: () {
+                                auth.signOut();
+                                Navigator.popUntil(context, (route) => false);
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const LandingPage(),
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                width: w,
+                                height: 50,
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 20),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(100),
+                                  color: const Color(0xffFF5959),
                                 ),
-                                const SizedBox(width: 5),
-                                Text(
-                                  "Logout",
-                                  style: GoogleFonts.inter(
-                                    textStyle: const TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                child: Center(
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const Icon(
+                                        Icons.logout,
+                                        color: Colors.white,
+                                      ),
+                                      const SizedBox(width: 5),
+                                      Text(
+                                        "Logout",
+                                        style: GoogleFonts.inter(
+                                          textStyle: const TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                              ],
+                              ),
                             ),
-                          ),
+                            const SizedBox(height: 45),
+                          ],
                         ),
                       ),
-                      const SizedBox(height: 45),
-                    ],
-                  ),
-                ),
               ),
             );
           }

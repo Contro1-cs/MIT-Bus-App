@@ -225,3 +225,11 @@ List userType = [
   'Student',
   'Faculty',
 ];
+
+List paymentType = [
+  'UPI',
+  'Online Banking',
+  'NEFT',
+  'TCS ION',
+  'Credit/Debit card',
+];

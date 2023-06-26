@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mit_bus_app/pages/home/home.dart';
 import 'package:mit_bus_app/pages/landing_page.dart';
+import 'package:mit_bus_app/pages/user%20onborading/admin_vericfication.dart';
 import 'package:mit_bus_app/pages/user%20onborading/onboarding_choice.dart';
 import 'package:mit_bus_app/widgets/custom_snackbars.dart';
 
@@ -25,6 +26,14 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     var h = MediaQuery.of(context).size.height;
     var w = MediaQuery.of(context).size.width;
+
+    @override
+    void initState() {
+      setState(() {
+        _hidePassword = false;
+      });
+      super.initState();
+    }
 
     passwordSignIn() async {
       try {
@@ -157,11 +166,11 @@ class _LoginPageState extends State<LoginPage> {
                               keyboardType: TextInputType.visiblePassword,
                               obscureText: _hidePassword,
                               decoration: InputDecoration(
-                                suffixIcon: _hidePassword
+                                suffixIcon: !_hidePassword
                                     ? IconButton(
                                         onPressed: () {
                                           setState(() {
-                                            _hidePassword = !_hidePassword;
+                                            _hidePassword = true;
                                           });
                                         },
                                         icon: const Icon(
@@ -172,7 +181,7 @@ class _LoginPageState extends State<LoginPage> {
                                     : IconButton(
                                         onPressed: () {
                                           setState(() {
-                                            _hidePassword = !_hidePassword;
+                                            _hidePassword = false;
                                           });
                                         },
                                         icon: const Icon(
@@ -205,6 +214,14 @@ class _LoginPageState extends State<LoginPage> {
                               _authPassword.text.trim().isEmpty) {
                             errorSnackbar(
                                 context, 'Please enter a email and password');
+                          } else if (_authEmail.text.trim() == 'admin' &&
+                              _authPassword.text.trim() == 'admin7890') {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const AdminVerification(),
+                              ),
+                            );
                           } else {
                             passwordSignIn();
                           }
