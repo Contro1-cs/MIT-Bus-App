@@ -80,7 +80,7 @@ class _AdminViewState extends State<AdminView> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const StudentAttendance(),
+                          builder: (context) => StudentAttendance(),
                         ),
                       );
                     },

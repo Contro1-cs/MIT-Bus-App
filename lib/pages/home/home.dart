@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:mit_bus_app/lists/lists.dart';
-import 'package:mit_bus_app/pages/home/attendance_fees.dart';
+import 'package:mit_bus_app/pages/home/attendance.dart';
+import 'package:mit_bus_app/pages/home/fees.dart';
 import 'package:mit_bus_app/pages/home/faculty_home.dart';
 import 'package:mit_bus_app/pages/home/profile.dart';
 import 'package:mit_bus_app/pages/home/student_home.dart';
@@ -23,40 +24,79 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final pages = [
       const HomeBody(),
-      const AttendanceAndFees(),
+      Attendance(),
+      const Fees(),
       const ProfilePage(),
     ];
     return WillPopScope(
       child: Scaffold(
           backgroundColor: Colors.white,
-          bottomNavigationBar: GNav(
-            onTabChange: (index) {
-              setState(() {
-                _currentIndex = index;
-              });
-            },
-            gap: 8,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            backgroundColor: const Color(0xff202020),
-            color: Colors.white,
-            activeColor: Colors.white,
-            tabMargin: const EdgeInsets.all(5),
-            tabBackgroundColor: Colors.white.withOpacity(0.3),
-            tabs: const [
-              GButton(
-                icon: Icons.home,
-                text: 'Home',
-              ),
-              GButton(
-                icon: Icons.airport_shuttle,
-                text: 'Bus',
-              ),
-              GButton(
-                icon: Icons.person,
-                text: 'Profile',
-              ),
-            ],
+          bottomNavigationBar: Container(
+            color: const Color(0xff202020),
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            child: GNav(
+              onTabChange: (index) {
+                setState(() {
+                  _currentIndex = index;
+                });
+              },
+              padding: const EdgeInsets.all(15),
+              tabMargin: const EdgeInsets.all(10),
+              backgroundColor: const Color(0xff202020),
+              color: Colors.white,
+              activeColor: Colors.white,
+              tabBackgroundColor: Colors.white.withOpacity(0.3),
+              gap: 8,
+              tabs: const [
+                GButton(
+                  icon: Icons.home,
+                  text: 'Home',
+                ),
+                GButton(
+                  icon: Icons.qr_code,
+                  text: 'Scan',
+                ),
+                GButton(
+                  icon: Icons.currency_rupee,
+                  text: 'Fees',
+                ),
+                GButton(
+                  icon: Icons.person,
+                  text: 'Profile',
+                ),
+              ],
+            ),
           ),
+          // bottomNavigationBar: Container(
+          //   height: 70,
+          //   child: GNav(
+          // onTabChange: (index) {
+          //   setState(() {
+          //     _currentIndex = index;
+          //   });
+          // },
+          //     gap: 8,
+
+          // tabs: const [
+          //   GButton(
+          //     icon: Icons.home,
+          //     text: 'Home',
+          //   ),
+          //   GButton(
+          //     icon: Icons.airport_shuttle,
+          //     text: 'Bus',
+          //   ),
+          //   GButton(
+          //     icon: Icons.currency_rupee,
+          //     text: 'Fees',
+          //   ),
+          //   GButton(
+          //     icon: Icons.person,
+          //     text: 'Profile',
+          //   ),
+          // ],
+          //   ),
+          // ),
           body: pages[_currentIndex]),
       onWillPop: () async {
         final shouldPop = await showDialog<bool>(
