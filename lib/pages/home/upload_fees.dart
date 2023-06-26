@@ -15,7 +15,7 @@ import 'package:mit_bus_app/widgets/drop_down.dart';
 import 'package:path/path.dart' as path;
 
 class UploadFeesDoc extends StatefulWidget {
-  const UploadFeesDoc({super.key});
+  const UploadFeesDoc({Key? key}) : super(key: key);
 
   @override
   State<UploadFeesDoc> createState() => _UploadFeesDocState();
@@ -29,6 +29,7 @@ class _UploadFeesDocState extends State<UploadFeesDoc> {
   final storageRef = FirebaseStorage.instance.ref();
 
   File? image;
+  double _uploadProgress = 0.0;
 
   @override
   void initState() {
@@ -55,7 +56,7 @@ class _UploadFeesDocState extends State<UploadFeesDoc> {
       try {
         XFile? image =
             await ImagePicker().pickImage(source: ImageSource.gallery);
-        if (image == null) errorSnackbar(context, 'Faild to pick image');
+        if (image == null) errorSnackbar(context, 'Failed to pick image');
         final receipt = File(image!.path);
         setState(() {
           this.image = receipt;
@@ -66,22 +67,24 @@ class _UploadFeesDocState extends State<UploadFeesDoc> {
     }
 
     Future<void> uploadImageToFirebaseStorage() async {
-      // Get the local file path
       String filePath = image!.path;
       File file = File(filePath);
 
       try {
-        // Create a storage reference from your Firebase app
-
-        // Create a reference to the image file
         var imageRef = storageRef.child("$uid/${_transactionID.text}.png");
 
-        // Upload the file to Firebase Storage
-        await imageRef.putFile(file);
+        var uploadTask = imageRef.putFile(file);
+
+        uploadTask.snapshotEvents.listen((TaskSnapshot snapshot) {
+          setState(() {
+            _uploadProgress = snapshot.bytesTransferred / snapshot.totalBytes;
+          });
+        });
+
+        await uploadTask;
 
         successSnackbar(context, 'Image uploaded successfully!');
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => HomePage()));
+        Navigator.pop(context);
       } catch (e) {
         errorSnackbar(context, 'Something went wrong: ${e.toString()}');
       }
@@ -119,14 +122,15 @@ class _UploadFeesDocState extends State<UploadFeesDoc> {
               ),
               const SizedBox(height: 20),
               CustomDropdownMenu(
-                  value: _payment,
-                  list: paymentType,
-                  onChanged: (value) {
-                    setState(() {
-                      _payment = value!;
-                    });
-                  },
-                  title: 'Payment method'),
+                value: _payment,
+                list: paymentType,
+                onChanged: (value) {
+                  setState(() {
+                    _payment = value!;
+                  });
+                },
+                title: 'Payment method',
+              ),
               const SizedBox(height: 20),
               Visibility(
                 visible: image != null,
@@ -162,55 +166,32 @@ class _UploadFeesDocState extends State<UploadFeesDoc> {
                     backgroundColor:
                         image == null ? purple : const Color(0XFF3F9056),
                   ),
-                  child: image == null
-                      ? Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 15),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Icon(
-                                Icons.upload_file_outlined,
-                                color: Colors.white,
-                              ),
-                              const SizedBox(width: 5),
-                              Text(
-                                "Screenshot of transaction",
-                                style: GoogleFonts.inter(
-                                  textStyle: const TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        )
-                      : Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 15),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Icon(
-                                Icons.image,
-                                color: Colors.white,
-                              ),
-                              const SizedBox(width: 5),
-                              Text(
-                                "Upload Different image",
-                                style: GoogleFonts.inter(
-                                  textStyle: const TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ],
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 15),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(
+                          Icons.upload_file_outlined,
+                          color: Colors.white,
+                        ),
+                        const SizedBox(width: 5),
+                        Text(
+                          image == null
+                              ? "Screenshot of transaction"
+                              : "Upload Different image",
+                          style: GoogleFonts.inter(
+                            textStyle: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
+                      ],
+                    ),
+                  ),
                 ),
               ),
             ],
@@ -225,22 +206,34 @@ class _UploadFeesDocState extends State<UploadFeesDoc> {
                 } else if (image == null) {
                   errorSnackbar(context, 'Please add an image');
                 } else {
-                  uploadImageToFirebaseStorage();
+                  if (_uploading != true) {
+                    setState(() {
+                      _uploading = true;
+                    });
+                    uploadImageToFirebaseStorage().then((_) {
+                      setState(() {
+                        _uploading = false;
+                      });
+                    });
+                  }
                 }
               },
               style: ElevatedButton.styleFrom(backgroundColor: purple),
               child: Container(
+                alignment: Alignment.center,
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                child: Text(
-                  "Upload",
-                  style: GoogleFonts.inter(
-                    textStyle: const TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
+                child: _uploading
+                    ? const CircularProgressIndicator()
+                    : Text(
+                        "Upload",
+                        style: GoogleFonts.inter(
+                          textStyle: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
               ),
             ),
           ),
