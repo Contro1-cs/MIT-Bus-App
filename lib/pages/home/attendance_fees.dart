@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mit_bus_app/pages/home/payment_history.dart';
 import 'package:mit_bus_app/pages/home/upload_fees.dart';
 import 'package:mit_bus_app/pages/landing_page.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -138,7 +139,14 @@ class _AttendanceAndFeesState extends State<AttendanceAndFees> {
                 width: w,
                 margin: const EdgeInsets.symmetric(horizontal: 25),
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PaymentHistory(),
+                      ),
+                    );
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xff3F9056),
                   ),

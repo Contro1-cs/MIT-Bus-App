@@ -113,7 +113,7 @@ class _HomeBodyState extends State<HomeBody> {
                 snapshot.data!.data() as Map<String, dynamic>;
             if (data['userType'] == userType[0]) {
               return StudentHome(data: data);
-            } else if (data['userType'] == 'Faculty') {
+            } else if (data['userType'] == userType[1]) {
               return FacultyHome(data: data);
             }
           }

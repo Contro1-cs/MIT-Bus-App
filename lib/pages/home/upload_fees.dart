@@ -122,7 +122,9 @@ class _UploadFeesDocState extends State<UploadFeesDoc> {
                   value: _payment,
                   list: paymentType,
                   onChanged: (value) {
-                    _payment = value!;
+                    setState(() {
+                      _payment = value!;
+                    });
                   },
                   title: 'Payment method'),
               const SizedBox(height: 20),
