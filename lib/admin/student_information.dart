@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mit_bus_app/pages/landing_page.dart';
+import 'package:mit_bus_app/widgets/custom_list_tile.dart';
 
 class StudentInformation extends StatefulWidget {
   @override
@@ -10,11 +11,7 @@ class StudentInformation extends StatefulWidget {
 
 class _StudentInformationState extends State<StudentInformation> {
   Future<void> _refreshData() async {
-    // Add your data refreshing logic here
-    // For example, you can re-fetch data from Firestore
-    setState(() {
-      // Update state variables or fetch data from Firestore again
-    });
+    setState(() {});
   }
 
   @override
@@ -56,29 +53,17 @@ class _StudentInformationState extends State<StudentInformation> {
                 final user = users[index];
                 final userName = user['userName'] as String;
                 final userType = user['userType'] as String;
-                final type = userType == 'Student' ? 'S' : 'F';
+                final type = userType == 'Student' ? 'Student' : 'Faculty';
 
-                return ListTile(
-                  title: Text(userName),
-                  leading: Container(
-                    height: 50,
-                    width: 50,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: purple,
-                      shape: BoxShape.circle,
-                    ),
-                    child: Text(
-                      type,
-                      style: GoogleFonts.inter(
-                        color: userType == 'Student'
-                            ? Colors.white
-                            : Colors.yellow,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 22,
-                      ),
-                    ),
-                  ),
+                if (user['userType'] != userType[1]) {
+                  index++;
+                }
+                return customListTile(
+                  context,
+                  userName,
+                  type,
+                  user,
+                  user['pendingFees'],
                 );
               },
             );
@@ -87,7 +72,7 @@ class _StudentInformationState extends State<StudentInformation> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _refreshData,
-        backgroundColor: purple,
+        backgroundColor: const Color(0xFF202020), // Updated to Color type
         child: const Icon(Icons.refresh),
       ),
     );

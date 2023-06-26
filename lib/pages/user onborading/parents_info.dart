@@ -32,7 +32,7 @@ class ParentsInfo extends StatefulWidget {
 
 TextEditingController _parentsName = TextEditingController(text: '');
 TextEditingController _parentsPhone = TextEditingController(text: '');
-TextEditingController _pendingFees = TextEditingController(text: '');
+TextEditingController _pendingFees = TextEditingController(text: '0');
 bool _isFeesPaid = false;
 
 class _ParentsInfoState extends State<ParentsInfo> {
@@ -74,7 +74,7 @@ class _ParentsInfoState extends State<ParentsInfo> {
             .map((word) => word[0].toUpperCase() + word.substring(1))
             .join(" "),
         'parentPhone': _parentsPhone.text.trim(),
-        'pendingFees': _isFeesPaid ? 0 : _pendingFees.text.trim(),
+        'pendingFees': int.parse(_pendingFees.text),
       }).then(
         (value) {
           successSnackbar(context, "User Added");
@@ -207,7 +207,7 @@ class _ParentsInfoState extends State<ParentsInfo> {
                                 },
                               ),
                               Text(
-                                'Not Paid',
+                                'Pending',
                                 style: GoogleFonts.poppins(
                                   textStyle: TextStyle(
                                     color: purple,
