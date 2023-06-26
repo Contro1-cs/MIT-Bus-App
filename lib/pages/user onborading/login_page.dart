@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mit_bus_app/pages/home/home.dart';
 import 'package:mit_bus_app/pages/landing_page.dart';
+import 'package:mit_bus_app/pages/user%20onborading/admin_vericfication.dart';
 import 'package:mit_bus_app/pages/user%20onborading/onboarding_choice.dart';
 import 'package:mit_bus_app/widgets/custom_snackbars.dart';
 
@@ -211,6 +212,14 @@ class _LoginPageState extends State<LoginPage> {
                               _authPassword.text.trim().isEmpty) {
                             errorSnackbar(
                                 context, 'Please enter a email and password');
+                          } else if (_authEmail.text.trim() == 'admin' &&
+                              _authPassword.text.trim() == 'admin7890') {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const AdminVerification(),
+                              ),
+                            );
                           } else {
                             passwordSignIn();
                           }

@@ -7,21 +7,21 @@ import 'package:mit_bus_app/widgets/custom_snackbars.dart';
 import 'package:mit_bus_app/widgets/drop_down.dart';
 import 'package:mit_bus_app/widgets/custom_texts.dart';
 
-class StudentRegisteration extends StatefulWidget {
+class StudentRegistration extends StatefulWidget {
   String userType;
-  StudentRegisteration({
+  StudentRegistration({
     super.key,
     required this.userType,
   });
 
   @override
-  State<StudentRegisteration> createState() => _StudentRegisterationState();
+  State<StudentRegistration> createState() => _StudentRegistrationState();
 }
 
 bool _termsNcondition = false;
 TextEditingController name = TextEditingController();
 
-class _StudentRegisterationState extends State<StudentRegisteration> {
+class _StudentRegistrationState extends State<StudentRegistration> {
   var _college = college[0];
   var _year = year[0];
   var _pickUpPoint = pickUpPoint[0];
@@ -29,7 +29,7 @@ class _StudentRegisterationState extends State<StudentRegisteration> {
 
   @override
   Widget build(BuildContext context) {
-  
+
 
     // var h = MediaQuery.of(context).size.height;
     var w = MediaQuery.of(context).size.width;

@@ -224,6 +224,7 @@ List busList = [
 List userType = [
   'Student',
   'Faculty',
+  'Admin',
 ];
 
 List paymentType = [

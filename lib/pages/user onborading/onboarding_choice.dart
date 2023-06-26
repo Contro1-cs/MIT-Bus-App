@@ -62,11 +62,11 @@ class RegisterPageState extends State<RegisterPage> {
             transitionDuration: const Duration(milliseconds: 500),
             pageBuilder: (context, animation, secondaryAnimation) {
               if (_userTypeValue == userType[0]) {
-                return StudentRegisteration(
+                return StudentRegistration(
                   userType: _userTypeValue.trim(),
                 );
               } else {
-                return const FacultyRegisteration();
+                return const FacultyRegistration();
               }
             },
             transitionsBuilder:
@@ -263,7 +263,7 @@ class RegisterPageState extends State<RegisterPage> {
                                 _loading = false;
                               }),
                               errorSnackbar(
-                                  context, 'Please enter a valid p+assword'),
+                                  context, 'Please enter a valid password'),
                             }
                           else
                             {

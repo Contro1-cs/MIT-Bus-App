@@ -62,7 +62,6 @@ class _HomePageState extends State<HomePage> {
         final shouldPop = await showDialog<bool>(
           context: context,
           builder: (context) {
-            // return AlertDialog();
             return AlertDialog(
               title: const Text(
                 'Want to exit the app?',

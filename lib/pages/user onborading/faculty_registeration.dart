@@ -9,18 +9,18 @@ import 'package:mit_bus_app/widgets/custom_snackbars.dart';
 import 'package:mit_bus_app/widgets/custom_texts.dart';
 import 'package:mit_bus_app/widgets/drop_down.dart';
 
-class FacultyRegisteration extends StatefulWidget {
+class FacultyRegistration extends StatefulWidget {
   final bool isStudent = false;
-  const FacultyRegisteration({super.key});
+  const FacultyRegistration({super.key});
 
   @override
-  State<FacultyRegisteration> createState() => _FacultyRegisterationState();
+  State<FacultyRegistration> createState() => _FacultyRegistrationState();
 }
 
 bool _termsNcondition = false;
 TextEditingController _facultyname = TextEditingController();
 
-class _FacultyRegisterationState extends State<FacultyRegisteration> {
+class _FacultyRegistrationState extends State<FacultyRegistration> {
   var _college = college[0];
   var _year = year[0];
   var _pickUpPoint = pickUpPoint[0];
