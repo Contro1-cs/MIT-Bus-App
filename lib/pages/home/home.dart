@@ -26,37 +26,101 @@ class _HomePageState extends State<HomePage> {
       const AttendanceAndFees(),
       const ProfilePage(),
     ];
-    return Scaffold(
-        backgroundColor: Colors.white,
-        bottomNavigationBar: GNav(
-          onTabChange: (index) {
-            setState(() {
-              _currentIndex = index;
-            });
+    return WillPopScope(
+      child: Scaffold(
+          backgroundColor: Colors.white,
+          bottomNavigationBar: GNav(
+            onTabChange: (index) {
+              setState(() {
+                _currentIndex = index;
+              });
+            },
+            gap: 8,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            backgroundColor: const Color(0xff202020),
+            color: Colors.white,
+            activeColor: Colors.white,
+            tabMargin: const EdgeInsets.all(5),
+            tabBackgroundColor: Colors.white.withOpacity(0.3),
+            tabs: const [
+              GButton(
+                icon: Icons.home,
+                text: 'Home',
+              ),
+              GButton(
+                icon: Icons.airport_shuttle,
+                text: 'Bus',
+              ),
+              GButton(
+                icon: Icons.person,
+                text: 'Profile',
+              ),
+            ],
+          ),
+          body: pages[_currentIndex]),
+      onWillPop: () async {
+        final shouldPop = await showDialog<bool>(
+          context: context,
+          builder: (context) {
+            // return AlertDialog();
+            return AlertDialog(
+              title: const Text(
+                'Want to exit the app?',
+                textAlign: TextAlign.center,
+              ),
+              actionsAlignment: MainAxisAlignment.spaceEvenly,
+              actions: [
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context, false);
+                  },
+                  child: Container(
+                    height: 50,
+                    width: 100,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(5),
+                        border: Border.all(color: purple)),
+                    alignment: Alignment.center,
+                    child: Text(
+                      "No",
+                      style: GoogleFonts.inter(
+                        color: Colors.black,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context, true);
+                  },
+                  child: Container(
+                    height: 50,
+                    width: 100,
+                    decoration: BoxDecoration(
+                      color: purple,
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    alignment: Alignment.center,
+                    child: Text(
+                      "Yes",
+                      style: GoogleFonts.inter(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            );
           },
-          gap: 8,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          backgroundColor: const Color(0xff202020),
-          color: Colors.white,
-          activeColor: Colors.white,
-          tabMargin: const EdgeInsets.all(5),
-          tabBackgroundColor: Colors.white.withOpacity(0.3),
-          tabs: const [
-            GButton(
-              icon: Icons.home,
-              text: 'Home',
-            ),
-            GButton(
-              icon: Icons.airport_shuttle,
-              text: 'Bus',
-            ),
-            GButton(
-              icon: Icons.person,
-              text: 'Profile',
-            ),
-          ],
-        ),
-        body: pages[_currentIndex]);
+        );
+        return shouldPop!;
+      },
+    );
   }
 }
 

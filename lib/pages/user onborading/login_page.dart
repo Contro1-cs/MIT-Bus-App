@@ -26,6 +26,12 @@ class _LoginPageState extends State<LoginPage> {
     var h = MediaQuery.of(context).size.height;
     var w = MediaQuery.of(context).size.width;
 
+    @override
+    void initState() {
+      _hidePassword = false;
+      super.initState();
+    }
+
     passwordSignIn() async {
       try {
         final credential = await FirebaseAuth.instance
@@ -161,7 +167,7 @@ class _LoginPageState extends State<LoginPage> {
                                     ? IconButton(
                                         onPressed: () {
                                           setState(() {
-                                            _hidePassword = !_hidePassword;
+                                            _hidePassword = false;
                                           });
                                         },
                                         icon: const Icon(
@@ -172,7 +178,7 @@ class _LoginPageState extends State<LoginPage> {
                                     : IconButton(
                                         onPressed: () {
                                           setState(() {
-                                            _hidePassword = !_hidePassword;
+                                            _hidePassword = true;
                                           });
                                         },
                                         icon: const Icon(

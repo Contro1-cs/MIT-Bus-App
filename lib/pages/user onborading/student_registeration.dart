@@ -29,10 +29,7 @@ class _StudentRegisterationState extends State<StudentRegisteration> {
 
   @override
   Widget build(BuildContext context) {
-    @override
-    void initState() {
-      super.initState();
-    }
+  
 
     // var h = MediaQuery.of(context).size.height;
     var w = MediaQuery.of(context).size.width;
