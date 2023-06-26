@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mit_bus_app/admin/student_attendance.dart';
+import 'package:mit_bus_app/admin/student_information.dart';
 import 'package:mit_bus_app/pages/landing_page.dart';
 
 class AdminView extends StatefulWidget {
@@ -45,7 +46,14 @@ class _AdminViewState extends State<AdminView> {
                   width: w,
                   padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => StudentInformation(),
+                        ),
+                      );
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.white,
                       side: BorderSide(

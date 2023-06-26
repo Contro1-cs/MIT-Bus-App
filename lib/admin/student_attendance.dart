@@ -10,6 +10,8 @@ class StudentAttendance extends StatefulWidget {
 class _StudentAttendanceState extends State<StudentAttendance> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return const Scaffold(
+      
+    );
   }
 }

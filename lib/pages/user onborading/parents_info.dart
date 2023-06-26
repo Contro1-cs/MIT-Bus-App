@@ -30,9 +30,9 @@ class ParentsInfo extends StatefulWidget {
   State<ParentsInfo> createState() => _ParentsInfoState();
 }
 
-TextEditingController _parentsName = TextEditingController();
-TextEditingController _parentsPhone = TextEditingController();
-TextEditingController _pendingFees = TextEditingController();
+TextEditingController _parentsName = TextEditingController(text: '');
+TextEditingController _parentsPhone = TextEditingController(text: '');
+TextEditingController _pendingFees = TextEditingController(text: '');
 bool _isFeesPaid = false;
 
 class _ParentsInfoState extends State<ParentsInfo> {
@@ -44,7 +44,7 @@ class _ParentsInfoState extends State<ParentsInfo> {
     CollectionReference users = FirebaseFirestore.instance.collection('users');
     Future<void> addParentsData() {
       return users.doc(uid).set({
-        'studentName': widget.studentName
+        'userName': widget.studentName
             .split(" ")
             .map((word) => word[0].toUpperCase() + word.substring(1))
             .join(" "),

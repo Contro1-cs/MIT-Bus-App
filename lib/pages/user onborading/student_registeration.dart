@@ -19,7 +19,7 @@ class StudentRegistration extends StatefulWidget {
 }
 
 bool _termsNcondition = false;
-TextEditingController name = TextEditingController();
+TextEditingController name = TextEditingController(text: '');
 
 class _StudentRegistrationState extends State<StudentRegistration> {
   var _college = college[0];
@@ -29,8 +29,6 @@ class _StudentRegistrationState extends State<StudentRegistration> {
 
   @override
   Widget build(BuildContext context) {
-
-
     // var h = MediaQuery.of(context).size.height;
     var w = MediaQuery.of(context).size.width;
     return WillPopScope(

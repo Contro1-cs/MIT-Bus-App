@@ -49,7 +49,7 @@ class _StudentProfileState extends State<StudentProfile> {
           Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
           setState(() {
             // Update the text controllers with the fetched data
-            _studentNameController.text = data['studentName'];
+            _studentNameController.text = data['userName'];
             _yearController.text = data['year'];
             _parentNameController.text = data['parentName'];
             _parentPhoneController.text = data['parentPhone'];
@@ -67,7 +67,7 @@ class _StudentProfileState extends State<StudentProfile> {
       return users
           .doc(uid)
           .update({
-            'studentName': _studentNameController.text,
+            'userName': _studentNameController.text,
             'year': _yearController.text,
             'pickupArea': _pickupAreaController.text,
             'pickupPoint': _pickupPointController.text,
@@ -172,7 +172,7 @@ class _StudentProfileState extends State<StudentProfile> {
           if (snapshot.connectionState == ConnectionState.done) {
             Map<String, dynamic> data =
                 snapshot.data!.data() as Map<String, dynamic>;
-            _studentNameController.text = data['studentName'];
+            _studentNameController.text = data['userName'];
             _yearController.text = data['year'];
             _parentNameController.text = data['parentName'];
             _parentPhoneController.text = data['parentPhone'];
@@ -223,7 +223,7 @@ class _StudentProfileState extends State<StudentProfile> {
                             GestureDetector(
                               onTap: () {
                                 if (_studentNameController.text !=
-                                        data['studentName'] ||
+                                        data['userName'] ||
                                     _yearController.text != data['year'] ||
                                     _parentNameController.text !=
                                         data['parentName'] ||

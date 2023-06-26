@@ -29,7 +29,9 @@ class _LoginPageState extends State<LoginPage> {
 
     @override
     void initState() {
-      _hidePassword = false;
+      setState(() {
+        _hidePassword = false;
+      });
       super.initState();
     }
 
@@ -164,11 +166,11 @@ class _LoginPageState extends State<LoginPage> {
                               keyboardType: TextInputType.visiblePassword,
                               obscureText: _hidePassword,
                               decoration: InputDecoration(
-                                suffixIcon: _hidePassword
+                                suffixIcon: !_hidePassword
                                     ? IconButton(
                                         onPressed: () {
                                           setState(() {
-                                            _hidePassword = false;
+                                            _hidePassword = true;
                                           });
                                         },
                                         icon: const Icon(
@@ -179,7 +181,7 @@ class _LoginPageState extends State<LoginPage> {
                                     : IconButton(
                                         onPressed: () {
                                           setState(() {
-                                            _hidePassword = true;
+                                            _hidePassword = false;
                                           });
                                         },
                                         icon: const Icon(

@@ -33,7 +33,7 @@ class _FacultyProfileState extends State<FacultyProfile> {
       return users
           .doc(uid)
           .update({
-            'facultyName': _facultyName.text,
+            'userName': _facultyName.text,
             'college': _college.text,
             'pickupArea': _pickupArea.text,
             'pickupPoint': _pickupPoint.text,
@@ -126,7 +126,7 @@ class _FacultyProfileState extends State<FacultyProfile> {
           if (snapshot.connectionState == ConnectionState.done) {
             Map<String, dynamic> data =
                 snapshot.data!.data() as Map<String, dynamic>;
-            _facultyName.text = data['facultyName'];
+            _facultyName.text = data['userName'];
             _college.text = data['college'];
             _pickupArea.text = data['pickupArea'];
             _pickupPoint.text = data['pickupPoint'];
@@ -160,7 +160,7 @@ class _FacultyProfileState extends State<FacultyProfile> {
                       const SizedBox(height: 30),
                       GestureDetector(
                         onTap: () {
-                          if (_facultyName.text != data['facultyName'] ||
+                          if (_facultyName.text != data['userName'] ||
                               _college != data['college'] ||
                               _pickupArea.text != data['pickupArea'] ||
                               _pickupPoint.text != data['pickupPoint']) {

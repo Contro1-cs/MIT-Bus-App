@@ -36,7 +36,7 @@ class _FacultyRegistrationState extends State<FacultyRegistration> {
 
     Future<void> addFacultyData() {
       return users.doc(uid).set({
-        'facultyName': _facultyname.text
+        'userName': _facultyname.text
             .trim()
             .split(" ")
             .map((word) => word[0].toUpperCase() + word.substring(1))
