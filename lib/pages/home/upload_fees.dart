@@ -7,11 +7,11 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mit_bus_app/lists/lists.dart';
+import 'package:mit_bus_app/pages/home/home.dart';
 import 'package:mit_bus_app/pages/landing_page.dart';
 import 'package:mit_bus_app/widgets/custom_snackbars.dart';
 import 'package:mit_bus_app/widgets/custom_texts.dart';
 import 'package:mit_bus_app/widgets/drop_down.dart';
-import 'package:path/path.dart' as path;
 
 class UploadFeesDoc extends StatefulWidget {
   const UploadFeesDoc({Key? key}) : super(key: key);
@@ -83,7 +83,12 @@ class _UploadFeesDocState extends State<UploadFeesDoc> {
         await uploadTask;
 
         successSnackbar(context, 'Image uploaded successfully!');
-        Navigator.pop(context);
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => HomePage(),
+          ),
+        );
       } catch (e) {
         errorSnackbar(context, 'Something went wrong: ${e.toString()}');
       }

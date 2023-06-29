@@ -25,7 +25,7 @@ class _LandingPageState extends State<LandingPage> {
         width: 200,
       ),
       "title": Text(
-        "Find your College Buss",
+        "Find your College Bus",
         style: GoogleFonts.inter(
           textStyle: const TextStyle(
             color: Colors.black,
