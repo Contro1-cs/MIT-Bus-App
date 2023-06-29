@@ -23,17 +23,25 @@ TextEditingController _authPassword = TextEditingController();
 
 class _LoginPageState extends State<LoginPage> {
   @override
+  void dispose() {
+    _authEmail.text = '';
+    _authPassword.text = '';
+    _hidePassword = true;
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    _authEmail.text = '';
+    _authPassword.text = '';
+    _hidePassword = true;
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     var h = MediaQuery.of(context).size.height;
     var w = MediaQuery.of(context).size.width;
-
-    @override
-    void initState() {
-      setState(() {
-        _hidePassword = false;
-      });
-      super.initState();
-    }
 
     passwordSignIn() async {
       try {
@@ -166,11 +174,11 @@ class _LoginPageState extends State<LoginPage> {
                               keyboardType: TextInputType.visiblePassword,
                               obscureText: _hidePassword,
                               decoration: InputDecoration(
-                                suffixIcon: !_hidePassword
+                                suffixIcon: _hidePassword
                                     ? IconButton(
                                         onPressed: () {
                                           setState(() {
-                                            _hidePassword = true;
+                                            _hidePassword = !_hidePassword;
                                           });
                                         },
                                         icon: const Icon(
@@ -181,7 +189,7 @@ class _LoginPageState extends State<LoginPage> {
                                     : IconButton(
                                         onPressed: () {
                                           setState(() {
-                                            _hidePassword = false;
+                                            _hidePassword = !_hidePassword;
                                           });
                                         },
                                         icon: const Icon(

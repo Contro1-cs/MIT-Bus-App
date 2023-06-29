@@ -7,14 +7,14 @@ import 'package:mit_bus_app/pages/home/upload_fees.dart';
 import 'package:mit_bus_app/pages/landing_page.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
-class AttendanceAndFees extends StatefulWidget {
-  const AttendanceAndFees({super.key});
+class Fees extends StatefulWidget {
+  const Fees({super.key});
 
   @override
-  State<AttendanceAndFees> createState() => _AttendanceAndFeesState();
+  State<Fees> createState() => _FeesState();
 }
 
-class _AttendanceAndFeesState extends State<AttendanceAndFees> {
+class _FeesState extends State<Fees> {
   @override
   Widget build(BuildContext context) {
     var w = MediaQuery.of(context).size.width;

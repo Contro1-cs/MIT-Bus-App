@@ -26,6 +26,8 @@ dependencies:
   firebase_storage: ^11.2.3
   image_picker: ^0.8.9
   url_launcher: ^6.1.11
+  qr_code_scanner: ^1.0.1
+  permission_handler: ^10.3.0
 
 dev_dependencies:
   flutter_test:
