@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mit_bus_app/pages/home/attendance_list.dart';
 import 'package:mit_bus_app/pages/landing_page.dart';
 
 customListTile(context, String title, String description, DocumentSnapshot user,
@@ -166,3 +167,38 @@ class UserDetailsPage extends StatelessWidget {
     );
   }
 }
+
+customListTile2(context, String title, DocumentReference documentReference, String date) {
+  return Card(
+    elevation: 8.0,
+    margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+    child: Container(
+      alignment: Alignment.center,
+      decoration: const BoxDecoration(color: Color.fromRGBO(64, 75, 96, .9)),
+      child: ListTile(
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+        title: Text(
+          title,
+          style:
+              const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+        trailing: const Icon(
+          Icons.keyboard_arrow_right,
+          color: Colors.white,
+          size: 30.0,
+        ),
+        onTap: () => {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  AttendanceListPage(docRef: documentReference, date: date),
+            ),
+          ),
+        },
+      ),
+    ),
+  );
+}
+
