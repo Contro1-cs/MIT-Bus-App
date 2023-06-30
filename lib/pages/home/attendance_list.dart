@@ -68,8 +68,9 @@ class _AttendanceListPageState extends State<AttendanceListPage> {
             margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
             padding: const EdgeInsets.symmetric(horizontal: 15),
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
-                border: Border.all(color: Colors.black)),
+              borderRadius: BorderRadius.circular(5),
+              border: Border.all(color: Colors.black),
+            ),
             child: TextField(
               onChanged: (value) => filterList(value),
               decoration: InputDecoration(
@@ -80,19 +81,26 @@ class _AttendanceListPageState extends State<AttendanceListPage> {
               cursorColor: Colors.black,
             ),
           ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: filteredDocuments.length,
-              itemBuilder: (context, index) {
-                String name = filteredDocuments[index]['name'];
-                String time = filteredDocuments[index]['time'];
-                String bus = filteredDocuments[index]['bus'];
-                String pickup = filteredDocuments[index]['pickup'];
+          if (filteredDocuments.isEmpty)
+            const Expanded(
+              child: Center(
+                child: Text('No data found'),
+              ),
+            )
+          else
+            Expanded(
+              child: ListView.builder(
+                itemCount: filteredDocuments.length,
+                itemBuilder: (context, index) {
+                  String name = filteredDocuments[index]['name'];
+                  String time = filteredDocuments[index]['time'];
+                  String bus = filteredDocuments[index]['bus'];
+                  String pickup = filteredDocuments[index]['pickup'];
 
-                return customListTile3(context, name, time, bus, pickup);
-              },
+                  return customListTile3(context, name, time, bus, pickup);
+                },
+              ),
             ),
-          ),
         ],
       ),
     );
