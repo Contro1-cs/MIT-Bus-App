@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:mit_bus_app/pages/landing_page.dart';
 import 'package:mit_bus_app/widgets/custom_list_tile.dart';
 
 class AttendanceScreen extends StatefulWidget {
@@ -31,6 +32,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: purple,
         title: const Text('Attendance List'),
       ),
       body: FutureBuilder<List<Map<String, dynamic>>>(

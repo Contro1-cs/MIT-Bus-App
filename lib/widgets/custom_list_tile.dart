@@ -168,13 +168,16 @@ class UserDetailsPage extends StatelessWidget {
   }
 }
 
-customListTile2(context, String title, DocumentReference documentReference, String date) {
+customListTile2(
+    context, String title, DocumentReference documentReference, String date) {
   return Card(
     elevation: 8.0,
     margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
     child: Container(
       alignment: Alignment.center,
-      decoration: const BoxDecoration(color: Color.fromRGBO(64, 75, 96, .9)),
+      decoration: BoxDecoration(
+          color: const Color(0xff350D5D),
+          borderRadius: BorderRadius.circular(5)),
       child: ListTile(
         contentPadding:
             const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
@@ -202,3 +205,71 @@ customListTile2(context, String title, DocumentReference documentReference, Stri
   );
 }
 
+customListTile3(context, String name, String time, String bus, String pickup) {
+  return Card(
+    elevation: 8.0,
+    margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+    child: Container(
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        color: const Color(0xff350D5D),
+        borderRadius: BorderRadius.circular(5),
+      ),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  name,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  bus.length >= 20
+                      ? 'Scanned code: ${bus.substring(0, 15)}...'
+                      : 'Scanned code: $bus',
+                  style: const TextStyle(
+                    color: Colors.grey,
+                    fontSize: 12,
+                  ),
+                ),
+              ],
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text(
+                  time,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  pickup,
+                  style: const TextStyle(
+                    color: Colors.grey,
+                    fontSize: 12,
+                  ),
+                ),
+              ],
+            )
+          ],
+        ),
+      ),
+    ),
+  );
+}

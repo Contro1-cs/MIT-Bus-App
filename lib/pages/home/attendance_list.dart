@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:mit_bus_app/pages/landing_page.dart';
 import 'package:mit_bus_app/widgets/custom_list_tile.dart';
 
 class AttendanceListPage extends StatefulWidget {
@@ -38,6 +39,7 @@ class _AttendanceListPageState extends State<AttendanceListPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Attendance List'),
+        backgroundColor: purple,
       ),
       body: FutureBuilder<List<Map<String, dynamic>>>(
         future: fetchPresentStudents(),
@@ -55,11 +57,10 @@ class _AttendanceListPageState extends State<AttendanceListPage> {
               itemBuilder: (context, index) {
                 String name = documents[index]['name'];
                 String time = documents[index]['time'];
+                String bus = documents[index]['bus'];
+                String pickup = documents[index]['pickup'];
 
-                return ListTile(
-                  title: Text(name),
-                  subtitle: Text(time),
-                );
+                return customListTile3(context, name, time, bus, pickup);
               },
             );
           }
