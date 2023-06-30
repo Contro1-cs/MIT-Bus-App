@@ -97,7 +97,13 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
             ),
             Container(
               margin: EdgeInsets.only(left: 10),
-              child: Text('Recent Dates:'),
+              child: Text(
+                'Recent Dates:',
+                style: GoogleFonts.poppins(
+                  color: Colors.black,
+                  fontSize: 20,
+                ),
+              ),
             ),
             Expanded(
               flex: 8,
@@ -115,7 +121,8 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                     return ListView.builder(
                       itemCount: documents.length,
                       itemBuilder: (context, index) {
-                        String date = documents[index]['date'];
+                        String date =
+                            documents[documents.length - index - 1]['date'];
 
                         return customListTile2(context, date, date);
                       },
