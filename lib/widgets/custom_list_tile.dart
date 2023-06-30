@@ -169,7 +169,7 @@ class UserDetailsPage extends StatelessWidget {
 }
 
 customListTile2(
-    context, String title, DocumentReference documentReference, String date) {
+    context, String title, String date) {
   return Card(
     elevation: 8.0,
     margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
@@ -195,8 +195,7 @@ customListTile2(
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) =>
-                  AttendanceListPage(docRef: documentReference, date: date),
+              builder: (context) => AttendanceListPage(date: date),
             ),
           ),
         },

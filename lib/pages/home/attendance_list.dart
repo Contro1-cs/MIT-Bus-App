@@ -4,11 +4,9 @@ import 'package:mit_bus_app/pages/landing_page.dart';
 import 'package:mit_bus_app/widgets/custom_list_tile.dart';
 
 class AttendanceListPage extends StatefulWidget {
-  final DocumentReference docRef;
   final String date;
   const AttendanceListPage({
     super.key,
-    required this.docRef,
     required this.date,
   });
 
@@ -52,17 +50,23 @@ class _AttendanceListPageState extends State<AttendanceListPage> {
 
           if (snapshot.hasData) {
             List<Map<String, dynamic>> documents = snapshot.data!;
-            return ListView.builder(
-              itemCount: documents.length,
-              itemBuilder: (context, index) {
-                String name = documents[index]['name'];
-                String time = documents[index]['time'];
-                String bus = documents[index]['bus'];
-                String pickup = documents[index]['pickup'];
+            if (documents.isEmpty) {
+              return Center(
+                child: Text('There is no data available'),
+              );
+            } else {
+              return ListView.builder(
+                itemCount: documents.length,
+                itemBuilder: (context, index) {
+                  String name = documents[index]['name'];
+                  String time = documents[index]['time'];
+                  String bus = documents[index]['bus'];
+                  String pickup = documents[index]['pickup'];
 
-                return customListTile3(context, name, time, bus, pickup);
-              },
-            );
+                  return customListTile3(context, name, time, bus, pickup);
+                },
+              );
+            }
           }
 
           if (snapshot.hasError) {
