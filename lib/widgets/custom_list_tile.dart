@@ -7,7 +7,7 @@ import 'package:mit_bus_app/pages/landing_page.dart';
 customListTile(context, String title, String description, DocumentSnapshot user,
     int fees) {
   return Card(
-    elevation: 8.0,
+    elevation: 10,
     margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
     child: Container(
       alignment: Alignment.center,
@@ -168,10 +168,9 @@ class UserDetailsPage extends StatelessWidget {
   }
 }
 
-customListTile2(
-    context, String title, String date) {
+customListTile2(context, String title, String date) {
   return Card(
-    elevation: 8.0,
+    elevation: 10,
     margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
     child: Container(
       alignment: Alignment.center,
@@ -206,69 +205,171 @@ customListTile2(
 
 customListTile3(context, String name, String time, String bus, String pickup) {
   return Card(
-    elevation: 8.0,
+    elevation: 10,
     margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
-    child: Container(
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        color: const Color(0xff350D5D),
-        borderRadius: BorderRadius.circular(5),
-      ),
+    child: GestureDetector(
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  name,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          color: const Color(0xff350D5D),
+          borderRadius: BorderRadius.circular(5),
+        ),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    name,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 10),
-                Text(
-                  bus.length >= 20
-                      ? 'Scanned code: ${bus.substring(0, 15)}...'
-                      : 'Scanned code: $bus',
-                  style: const TextStyle(
-                    color: Colors.grey,
-                    fontSize: 12,
+                  const SizedBox(height: 10),
+                  Text(
+                    bus.length >= 20
+                        ? 'Scanned code: ${bus.substring(0, 15)}...'
+                        : 'Scanned code: $bus',
+                    style: const TextStyle(
+                      color: Colors.grey,
+                      fontSize: 12,
+                    ),
                   ),
-                ),
-              ],
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Text(
-                  time,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
+                ],
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Text(
+                    time,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 10),
-                Text(
-                  pickup,
-                  style: const TextStyle(
-                    color: Colors.grey,
-                    fontSize: 12,
+                  const SizedBox(height: 10),
+                  Text(
+                    pickup,
+                    style: const TextStyle(
+                      color: Colors.grey,
+                      fontSize: 12,
+                    ),
                   ),
-                ),
-              ],
-            )
-          ],
+                ],
+              )
+            ],
+          ),
         ),
       ),
+      onTap: () {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Details'),
+              content: SingleChildScrollView(
+                child: Table(
+                  border: const TableBorder(
+                    horizontalInside: BorderSide(color: Colors.black),
+                  ),
+                  columnWidths: const {
+                    0: FlexColumnWidth(1.0),
+                    1: FlexColumnWidth(2.0),
+                  },
+                  children: [
+                    TableRow(
+                      children: [
+                        const TableCell(
+                          child: Padding(
+                            padding: EdgeInsets.all(10),
+                            child: Text('Name:'),
+                          ),
+                        ),
+                        TableCell(
+                          child: Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: Text(name),
+                          ),
+                        ),
+                      ],
+                    ),
+                    TableRow(
+                      children: [
+                        const TableCell(
+                          child: Padding(
+                            padding: EdgeInsets.all(10),
+                            child: Text('Time:'),
+                          ),
+                        ),
+                        TableCell(
+                          child: Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: Text(time),
+                          ),
+                        ),
+                      ],
+                    ),
+                    TableRow(
+                      children: [
+                        const TableCell(
+                          child: Padding(
+                            padding: EdgeInsets.all(10),
+                            child: Text('Code:'),
+                          ),
+                        ),
+                        TableCell(
+                          child: Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: Text(bus),
+                          ),
+                        ),
+                      ],
+                    ),
+                    TableRow(
+                      children: [
+                        const TableCell(
+                          child: Padding(
+                            padding: EdgeInsets.all(10),
+                            child: Text('Pickup:'),
+                          ),
+                        ),
+                        TableCell(
+                          child: Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: Text(pickup),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              actions: [
+                SizedBox(
+                  height: 40,
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(backgroundColor: purple),
+                    child: const Text('Close'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ),
+              ],
+            );
+          },
+        );
+      },
     ),
   );
 }

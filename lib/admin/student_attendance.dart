@@ -96,7 +96,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
               ),
             ),
             Container(
-              margin: EdgeInsets.only(left: 10),
+              margin: const EdgeInsets.only(left: 10),
               child: Text(
                 'Recent Dates:',
                 style: GoogleFonts.poppins(
