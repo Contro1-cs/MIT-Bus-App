@@ -197,8 +197,9 @@ class QRResultPage extends StatelessWidget {
       String id,
       String bus,
     ) async {
+      DocumentReference addDate = attendanceRef.doc(date);
       DocumentReference docRef =
-          attendanceRef.doc(date).collection(uid).doc(uid);
+          attendanceRef.doc(date).collection(date).doc(uid);
       DocumentSnapshot docSnapshot = await docRef.get();
 
       if (docSnapshot.exists) {
@@ -211,6 +212,10 @@ class QRResultPage extends StatelessWidget {
         );
         return;
       }
+
+      addDate.set({
+        'date': date,
+      });
 
       docRef.set({
         'name': name,
